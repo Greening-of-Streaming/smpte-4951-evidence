@@ -1,0 +1,13 @@
+device,content,codec,mode,n,errors,window_s,w_base_mean_w,w_task_mean_w,w_task_min_w,w_task_max_w,w_task_sd_w,delta_w_mean_w,delta_w_min_w,delta_w_max_w,flags,alive_at_end,jobs
+atv,BBB (iso-bitrate),AV1,headless,3,0,120,3.453,5.74,5.633,5.842,0.085,2.288,2.095,2.466,🟢🟢🟢,YYY,9be1e1d6 4514420e 53b55302
+atv,BBB (iso-bitrate),H.264,headless,3,0,120,3.272,4.487,4.47,4.51,0.017,1.215,1.171,1.247,🟢🟢🟢,YYY,13425203 5f76733b 7a453a7c
+atv,BBB (iso-bitrate),HEVC,headless,3,0,120,3.489,4.451,4.433,4.474,0.017,0.961,0.477,1.221,🟢🟢🟢,YYY,0caaa7c1 07149c6c c03615b2
+atv,BBB (iso-bitrate),VP9,headless,3,0,120,3.503,5.694,5.673,5.733,0.028,2.191,2.106,2.324,🟢🟢🟢,YYY,061559c6 4d9f2944 85aa43b7
+atv,Kranjska (iso-bitrate),AV1,headless,3,0,120,3.368,4.153,3.347,4.639,0.574,0.785,-0.164,1.274,🔴🟢🟢,nYY,52f0f503 1a2fed48 959fc2be
+atv,Kranjska (iso-bitrate),H.264,headless,3,0,120,3.474,3.371,3.36,3.386,0.011,-0.103,-0.149,-0.057,🔴🔴🔴,YYY,cc7fff63 e158ba67 415d23a1
+atv,Kranjska (iso-bitrate),HEVC,headless,3,0,120,3.517,3.352,3.346,3.356,0.004,-0.165,-0.236,-0.078,🔴🔴🔴,YYY,37ee660d 235e347a 91871384
+atv,Kranjska (iso-bitrate),VP9,headless,3,0,120,3.296,4.792,4.723,4.837,0.05,1.497,1.41,1.555,🟢🟢🟢,YYY,bb299f11 13378b8c 87a42c89
+atv,Meridian (iso-bitrate),AV1,headless,3,0,120,3.348,5.465,5.328,5.567,0.101,2.117,2.033,2.251,🟢🟢🟢,YYY,06ddf4c1 938f6c7b e4333696
+atv,Meridian (iso-bitrate),H.264,headless,3,0,120,3.342,4.438,4.389,4.475,0.036,1.095,0.774,1.265,🟢🟢🟢,YYY,36dfeec4 6be1659a dc54ccad
+atv,Meridian (iso-bitrate),HEVC,headless,3,0,120,3.194,4.391,4.344,4.437,0.038,1.197,1.157,1.267,🟢🟢🟢,YYY,a28fd5ed cd934754 8115a202
+atv,Meridian (iso-bitrate),VP9,headless,3,0,120,3.266,5.365,5.344,5.392,0.02,2.098,2.074,2.139,🟢🟢🟢,YYY,4316ef0a 31bdb35e dbb70a0d

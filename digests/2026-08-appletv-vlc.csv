@@ -1,0 +1,5 @@
+codec,n,w_task_mean_w,w_task_min_w,w_task_max_w,delta_w_mean_w,delta_w_min_w,delta_w_max_w,w_base_mean_w,task_sd_mean_w,confidence_flags,playing_polls,clip,window_s,baseline_state
+h264,2,5.403,5.097,5.709,1.443,0.618,2.268,3.96,0.716,🟡 🟢,12/12 12/12,_atv/bbbiso_h264_3min.mp4,120,settings
+h265,2,5.074,5.024,5.124,1.674,1.215,2.132,3.401,0.329,🟢 🟢,12/12 12/12,_atv/bbbiso_h265_3min.mp4,120,settings
+av1,2,6.441,6.373,6.509,2.052,1.067,3.038,4.389,0.655,🟢 🟢,12/12 12/12,_atv/bbbiso_av1_3min.mp4,120,settings
+vp9,2,6.473,6.356,6.591,1.746,-0.025,3.516,4.728,0.603,🟢 🔴,12/12 12/12,_atv/bbbiso_vp9_3min.webm,120,settings

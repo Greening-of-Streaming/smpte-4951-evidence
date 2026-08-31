@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" width="1600" height="800" font-family="Helvetica, Arial, sans-serif">
+  <rect width="1600" height="800" fill="#ffffff"/>
+
+  <!-- ============ the streaming chain: what is measured ============ -->
+  <line x1="150" y1="150" x2="1420" y2="150" stroke="#e7e6e6" stroke-width="3" marker-end="url(#greyArrow)"/>
+  <text x="1080" y="118" text-anchor="middle" font-size="17" fill="#aeb3c4">streaming content flow</text>
+
+  <g text-anchor="middle">
+    <circle cx="190"  cy="150" r="38" fill="#ffffff" stroke="#68a06a" stroke-width="3"/>
+    <text x="190" y="212" font-size="19" fill="#1f2236">Encoder</text>
+    <circle cx="430"  cy="150" r="38" fill="#ffffff" stroke="#68a06a" stroke-width="3"/>
+    <text x="430" y="212" font-size="19" fill="#1f2236">Packager / origin</text>
+    <circle cx="700"  cy="150" r="38" fill="#ffffff" stroke="#aeb3c4" stroke-width="3" stroke-dasharray="6 5"/>
+    <text x="700" y="212" font-size="19" fill="#aeb3c4">CDN / cache</text>
+    <circle cx="940"  cy="150" r="38" fill="#ffffff" stroke="#aeb3c4" stroke-width="3" stroke-dasharray="6 5"/>
+    <text x="940" y="212" font-size="19" fill="#aeb3c4">Access network</text>
+    <circle cx="1250" cy="150" r="38" fill="#ffffff" stroke="#68a06a" stroke-width="3"/>
+    <text x="1250" y="212" font-size="19" fill="#1f2236">End-user devices</text>
+    <text x="820" y="238" font-size="16" fill="#aeb3c4">outside this paper's measurement boundary</text>
+  </g>
+
+  <!-- ============ REM: measurements flow IN ============ -->
+  <rect x="440" y="392" width="720" height="88" rx="10" fill="#1f2236"/>
+  <text x="800" y="428" text-anchor="middle" font-size="21" fill="#ffffff">REM — field collection</text>
+  <text x="800" y="456" text-anchor="middle" font-size="17" fill="#b6d3ac">experiment management · device grouping · time-series store</text>
+
+  <g stroke="#aeb3c4" stroke-width="2.5" stroke-dasharray="7 5" fill="none">
+    <path d="M190 250 L190 330 L600 330 L600 392" marker-end="url(#greyArrow)"/>
+    <path d="M430 250 L430 330"/>
+    <path d="M1215 250 L1215 330 L1000 330 L1000 392" marker-end="url(#greyArrow)"/>
+  </g>
+  <text x="250" y="320" font-size="16" fill="#aeb3c4">cloud path · 10 s · integer watts</text>
+
+  <g stroke="#68a06a" stroke-width="3" fill="none">
+    <path d="M1285 250 L1285 358 L1100 358 L1100 392" marker-end="url(#greenArrow)"/>
+  </g>
+  <text x="1268" y="298" text-anchor="end" font-size="16" font-weight="bold" fill="#56895a">LEM · LAN path</text>
+  <text x="1268" y="320" text-anchor="end" font-size="16" fill="#56895a">10 s to 1 s · milliwatts</text>
+
+  <!-- ============ OWL: control flows OUT ============ -->
+  <rect x="70" y="560" width="400" height="126" rx="10" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="270" y="592" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2236">OWL — instrumented host</text>
+  <text x="270" y="620" text-anchor="middle" font-size="17" fill="#1f2236">encode and packaging workloads</text>
+  <text x="270" y="646" text-anchor="middle" font-size="16" fill="#56895a">two meters · 1 s · milliwatts</text>
+  <text x="270" y="670" text-anchor="middle" font-size="16" fill="#56895a">dedicated mode · pre-job idle guard</text>
+
+  <rect x="1130" y="560" width="400" height="126" rx="10" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="1330" y="592" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2236">OWL — client decode rig</text>
+  <text x="1330" y="620" text-anchor="middle" font-size="17" fill="#1f2236">eight devices metered concurrently</text>
+  <text x="1330" y="646" text-anchor="middle" font-size="16" fill="#56895a">one meter per device · 1 s · milliwatts</text>
+  <text x="1330" y="670" text-anchor="middle" font-size="16" fill="#56895a">same sensor and protocol as LEM (0.2%)</text>
+
+  <path d="M160 560 C 62 420, 58 240, 146 148" stroke="#68a06a" stroke-width="3.5" fill="none" marker-end="url(#greenArrow)"/>
+  <path d="M1440 560 C 1548 420, 1552 240, 1294 148" stroke="#68a06a" stroke-width="3.5" fill="none" marker-end="url(#greenArrow)"/>
+  <text x="52" y="380" font-size="17" font-weight="bold" fill="#56895a" transform="rotate(-80 52 380)" text-anchor="middle">orchestrates and measures the encode</text>
+  <text x="1566" y="380" font-size="17" font-weight="bold" fill="#56895a" transform="rotate(80 1566 380)" text-anchor="middle">orchestrates and measures the decode</text>
+
+  <!-- per-run envelope, shared by both benches -->
+  <rect x="500" y="600" width="600" height="66" rx="10" fill="#ffffff" stroke="#1f2236" stroke-width="2.5" stroke-dasharray="8 5"/>
+  <text x="800" y="628" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2236">per-run envelope</text>
+  <text x="800" y="652" text-anchor="middle" font-size="16" fill="#1f2236">baseline → attributed ΔW → confidence flag</text>
+  <line x1="470" y1="633" x2="500" y2="633" stroke="#1f2236" stroke-width="2" stroke-dasharray="6 4"/>
+  <line x1="1100" y1="633" x2="1130" y2="633" stroke="#1f2236" stroke-width="2" stroke-dasharray="6 4"/>
+
+  <!-- legend -->
+  <g font-size="16">
+    <line x1="430" y1="742" x2="490" y2="742" stroke="#aeb3c4" stroke-width="2.5" stroke-dasharray="7 5"/>
+    <text x="502" y="747" fill="#1f2236">measurements flowing in</text>
+    <line x1="760" y1="742" x2="820" y2="742" stroke="#68a06a" stroke-width="3.5"/>
+    <text x="832" y="747" fill="#1f2236">control and instrumentation flowing out</text>
+  </g>
+
+  <defs>
+    <marker id="greyArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0 0 L9 4.5 L0 9 z" fill="#aeb3c4"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0 0 L9 4.5 L0 9 z" fill="#68a06a"/>
+    </marker>
+  </defs>
+</svg>

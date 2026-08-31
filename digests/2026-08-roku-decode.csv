@@ -1,0 +1,5 @@
+codec,n,w_task_mean_w,w_task_min_w,w_task_max_w,delta_w_mean_w,delta_w_min_w,delta_w_max_w,delta_w_sd_w,w_base_mean_w,confidence_flags,n_task,clip,window_s,mode
+h264,3,2.187,2.16,2.214,0.381,0.369,0.397,0.014,1.806,🟢 🟢 🟢,150/150/150,bbbiso_h264_20min.mp4,150,headless
+h265,3,2.269,2.246,2.285,0.470,0.456,0.483,0.014,1.798,🟢 🟢 🟢,150/150/150,bbbiso_h265_20min.mp4,150,headless
+av1,3,2.284,2.273,2.289,0.476,0.469,0.483,0.007,1.808,🟢 🟢 🟢,150/150/148,bbbiso_av1_20min.mp4,150,headless
+vp9,3,2.292,2.283,2.297,0.481,0.465,0.492,0.014,1.810,🟢 🟢 🟢,150/150/150,bbbiso_vp9_20min.webm,150,headless
