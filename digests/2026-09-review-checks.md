@@ -771,10 +771,9 @@ wording):**
     the source. figures/README's 09-28 heading still calls it
     "Figure 6".
 17. **Evidence repo sync (item 6): pushed 2026-09-30 after Ben's
-    confirmation** (public `66c82f8`). **R8 (this amendment) is NOT in
-    the pack:** it needs this digest, RESULTS_INDEX.md and
-    `analysis/c28_r8_calibration.py` re-copied, and a push only on Ben's
-    confirmation. As first prepared:
+    confirmation** (public `66c82f8`); the R8 amendment, its script and
+    the re-rendered Figure 7 followed in public `9528da8`. As first
+    prepared:
     - Scratch clone commit on top of public `2067f82`; 25 files,
       +2164/−31. It carries C25–C27, the C24 and C11 F1 amendments,
       RESULTS_INDEX, figures/README, all seven paper figures, and this
