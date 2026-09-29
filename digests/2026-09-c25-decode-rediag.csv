@@ -1,0 +1,9 @@
+arm,device,codec,n,mean_dw_w,sd_dw_w,min_dw_w,max_dw_w,flags,mean_w_base,mean_w_task,sink,panel_awake,decoder,player_state,presented_fps,jobs
+july_headless_panel_on_bbox,bbox,av1,3,1.765,0.024,1.738,1.781,🟢🟢🟢,5.856,7.621,panel:HDMI_2,True,none,PLAYING,5.0/5.0/4.9,77e39af2 18937d10 fb978807
+july_headless_panel_on_bbox,gtv,av1,3,0.447,0.071,0.373,0.514,🟢🟢🟢,1.209,1.656,panel:HDMI_1,True,c2.mtk.av1.decoder,PLAYING,eye-checked,77e39af2 18937d10 fb978807
+screen,bbox,av1,3,1.773,0.029,1.743,1.8,🟢🟢🟢,5.708,7.481,panel:HDMI_2,True,none,PLAYING,5.0/5.1/5.0,a22974ba ffa96b52 92f5a72b
+screen,bbox,h264,3,0.331,0.025,0.312,0.359,🟢🟢🟢,5.687,6.018,panel:HDMI_2,True,OMX.Berlin.video_decoder.avc,PLAYING,50.0/49.9/50.0,419cddbb 63b9004c bc477b1a
+screen,bbox,h265,3,0.249,0.043,0.2,0.278,🟢🟢🟡,5.711,5.96,panel:HDMI_2,True,OMX.Berlin.video_decoder.hevc,PLAYING,50.0/50.0/50.0,9b6bcca3 fc76a3d6 42ab84d2
+screen,gtv,av1,3,0.427,0.041,0.387,0.469,🟢🟢🟢,1.236,1.663,panel:HDMI_1,True,c2.mtk.av1.decoder,PLAYING,eye-checked,9e41eec1 cff82e7b 271548a3
+screen,gtv,h264,3,0.468,0.107,0.344,0.534,🟢🟢🟢,1.236,1.704,panel:HDMI_1,True,c2.mtk.avc.decoder,PLAYING,eye-checked,87a1cb01 e5059329 862fd257
+screen,gtv,h265,3,0.506,0.04,0.468,0.547,🟢🟢🟢,1.195,1.701,panel:HDMI_1,True,c2.mtk.hevc.decoder,PLAYING,eye-checked,39cdcb78 d161045c 70e6f822

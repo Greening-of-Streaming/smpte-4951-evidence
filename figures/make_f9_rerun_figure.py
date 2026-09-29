@@ -26,7 +26,7 @@ VALID = {"9393f686": ["gtv"], "139f4979": ["gtv"],
          "0a88b387": ["pi5"]}
 DEV_COLOR = {"pi5": "#2a78d6", "firestick": "#eb6834", "gtv": "#1baf7a"}
 DEV_LABEL = {"pi5": "Pi 5 (sw decode, headless)",
-             "firestick": "Fire TV Stick 4K (panel dark)",
+             "firestick": "Fire TV Stick 4K (display dark)",
              "gtv": "Google TV Streamer"}
 TEXT_1, TEXT_2, GRID, SURFACE = "#0b0b0b", "#52514e", "#e5e4e0", "#ffffff"
 plt.rcParams.update({
@@ -65,20 +65,20 @@ ax.set_xticklabels(["30 s", "5 m", "20 m", "59 m"], fontsize=8)
 ax.minorticks_off()
 ax.axhline(0, color=TEXT_2, lw=0.7, zorder=2)
 ax.set_ylabel("ΔW over device idle (W)")
-ax.set_xlabel("sampled window (log scale) — BBB H.264 1080p60, HTTP,\n"
-              "keep_awake pinned, n=2 per duration", fontsize=8)
+ax.set_xlabel("sampled window (log scale), BBB H.264 1080p60, HTTP,\n"
+              "sleep timers pinned, n=2 per duration", fontsize=8)
 handles = [plt.Line2D([], [], color=DEV_COLOR[d], lw=1.6, label=DEV_LABEL[d])
            for d in ("pi5", "gtv", "firestick")]
 handles += [plt.Line2D([], [], color=TEXT_2, ls="none", marker="o", mfc=TEXT_2,
-                       label="filled = Repeatable"),
+                       label="filled: confident run"),
             plt.Line2D([], [], color=TEXT_2, ls="none", marker="o",
-                       mfc="#ffffff", label="open = Early Insight"),
+                       mfc="#ffffff", label="open: marginal run"),
             plt.Line2D([], [], color=TEXT_2, ls="none", marker="X",
-                       mfc="#ffffff", label="X = Need More Data")]
+                       mfc="#ffffff", label="X: run not distinguishable from idle")]
 fig.legend(handles=handles, frameon=False, fontsize=7.5, loc="upper center",
            bbox_to_anchor=(0.5, 0.15), ncol=2)
-fig.suptitle("Real signals are green in seconds and flat through 59 min;\n"
-             "a small margin flickers at every duration — repeats beat length",
+fig.suptitle("Real signals are confident within seconds and flat through 59 min;\n"
+             "a small margin flickers at every duration: repeats beat length",
              fontsize=9.5, x=0.02, ha="left", color=TEXT_1)
 fig.tight_layout(rect=(0, 0.22, 1, 0.87))
 for ext in ("svg", "png"):

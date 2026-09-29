@@ -1,0 +1,5 @@
+arm,device,codec,n,mean_dw_w,sd_dw_w,min_dw_w,max_dw_w,flags,mean_w_base,mean_w_task,sink,panel_awake,decoder,player_state,presented_fps,jobs
+1080p30,bbox,av1,3,2.029,0.018,2.013,2.049,🟢🟢🟢,5.903,7.932,panel:HDMI_2,True,none,PLAYING,16.6/14.4/14.7,a94336c7 bd06079d 1b468d03
+1080p30,bbox,h264,3,0.022,0.035,-0.015,0.055,🔴🔴🔴,5.981,6.003,panel:HDMI_2,True,OMX.Berlin.video_decoder.avc,PLAYING,30.0/30.0/30.0,79684ac2 2f69ecf2 f6b66b1a
+720p30,bbox,av1,3,1.508,0.018,1.495,1.528,🟢🟢🟢,5.945,7.454,panel:HDMI_2,True,none,PLAYING,29.9/30.0/29.9,2a99092d c8beb124 7b204dd4
+720p30,bbox,h264,3,-0.078,0.008,-0.086,-0.071,🔴🔴🔴,5.964,5.886,panel:HDMI_2,True,OMX.Berlin.video_decoder.avc,PLAYING,30.0/30.0/30.0,61ab59d8 a60c3b21 c565b4c0

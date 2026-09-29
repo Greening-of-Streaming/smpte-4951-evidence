@@ -90,6 +90,9 @@ lab review.
 
 ### F1 — A streaming box plays 4–7× cheaper than a general-purpose board
 
+> **⚠ Amended 2026-09-27 (Figure 9 GTV bar): the GTV denominator re-measured at +0.613 W (n=3), so the
+> ladder is 2.1–3.3×, not 4.4–6.8×. See "Amendment 2026-09-27 — F1" at the end of this digest.**
+
 - **Claim:** same BBB 1080p60 H.264 clip, local delivery, display
   attached, marker-verified: Google TV +0.30 W · Pi 400 hw +1.32 W
   (4.4×) · Pi 400 sw +1.96 W (6.5×) · Pi 5 sw +2.03 W (6.8×). The gap
@@ -481,3 +484,80 @@ envelopes under `/srv/data/owl/results/decode/`); reproduce with:
   platform-tools/adb` r37.0.0), `/proc/device-tree/model|compatible`
   and `/proc/cpuinfo` over ssh on the Pis; wattlab commit of the same
   day (rig.py `silicon` strings + MAC follower).
+
+
+---
+
+## Amendment 2026-09-27 — F1: the GTV bar re-measured; the ladder is 2–3×, not 4–7× (handoff 27b item 3)
+
+**Query first:**
+- F1's GTV row (`357b087d`, 2026-07-30, PA329C monitor) was **not** a
+  paused-player row (the C25 F3 signature). Task 1.44–1.55 W from the
+  first sample, 0.30 W over a 1.248 W baseline; `c2.mtk.avc.decoder`
+  allocated; monitor context rose as video appeared.
+- It was a **single row (n=1)**, as are the three Pi rows it is divided
+  into.
+- The baseline is not the explanation: 1.25 W then against 1.19–1.27 W
+  today.
+
+So the query could not settle the bar, and the run was made.
+
+**Run:** batch `20260927e7e5`, rows 10–12, 2026-09-27 19:49–20:00 CEST.
+- GTV, the F1 recipe itself (template `bbb_h264_gtv_local`: BBB 1080p60
+  H.264 High 8.0 Mb/s, pushed to the box and played from
+  `/sdcard/Download`, no network).
+- Screen mode on **C2 HDMI_1** (panel lit; the F1 row used the PA329C).
+- 150 s windows, n=3.
+- Every row eye-checked smooth by Ben at the panel, audio audible.
+- GTV output mode 3840×2160 at 60 Hz, HDR passthrough (SDR out).
+
+| Row | ΔW | Baseline | Task | Flag |
+|---|---|---|---|---|
+| `a8571021` | +0.621 | 1.246 | 1.867 | 🟢 |
+| `f39a81bd` | +0.562 | 1.269 | 1.831 | 🟢 |
+| `c8000fc2` | +0.655 | 1.190 | 1.845 | 🟢 |
+| **mean** | **+0.613 W** (sd 0.047) | | | |
+
+This agrees with the GTV's other post-fix hardware H.264 readings:
+- C18 F1 local file +0.50 W;
+- C25 F1 Meridian +0.47 W;
+- the 07-30 HTTP row +0.62 W (F6).
+
+The July +0.298 W was the low outlier, with the same baseline and a
+lower task draw (1.55 against 1.85 W). Unexplained candidates: the
+display (PA329C against C2), GTV firmware and launcher since July,
+and output mode.
+
+**Ladder on both values** (numerators = the July F1 rows, n=1 each, not
+re-run):
+
+| Numerator | ÷ 0.298 W (F1, n=1) | ÷ 0.613 W (today, n=3) |
+|---|---|---|
+| Pi 5 sw +2.026 W (`ea55f33b`) | 6.8× | **3.3×** |
+| Pi 400 sw +1.958 W (`d99775a0`) | 6.6× | **3.2×** |
+| Pi 400 hw +1.315 W (`606d5ad3`, v4l2m2m-copy, upper bound) | 4.4× | **2.1×** |
+
+- **Traffic Light:**
+  - GTV +0.613 W: 🟢 Repeatable (n=3, sd 0.047, eye-verified).
+  - The ratios: 🔴 Need More Data, because every numerator is a single
+    July row on a different display, and the n=3 bar fails on the
+    numerators.
+  - The **direction** (streaming box cheaper than a general-purpose
+    board playing the same file) is not in doubt at any of these values.
+    The **multiplier** is: 2–3× on today's denominator, and F2's
+    same-board hw-vs-sw (3.7× realtime, n≥3) is the only multiplier in
+    this family that meets the bar.
+- **Consequence:** "4–7×" (F1 headline, `drafts/00-abstract.md:40`,
+  `drafts/04-findings.md:161`, the owl finding slug
+  `streaming-box-plays-4-7x-cheaper-than-general-purpose`) should not be
+  quoted.
+- **Resolving run (not made tonight):** the three Pi numerator rows at
+  n=3 on the C2, same file, so numerator and denominator share one
+  display and one date.
+- **Provenance:**
+  - Envelopes `/srv/data/owl/results/decode/2026-09-27_{a8571021,f39a81bd,c8000fc2}.json`;
+    eye verdicts `/srv/data/owl/campaign_2026-09-27_eye/eye.jsonl`.
+  - Feeder: `python3 analysis/eye_feeder.py /srv/data/owl/campaign_2026-09-27_eye 20260927e7e5 analysis/c26_eye_plan.json`
+    (rows 10–12).
+  - Figure 9 (`fig_c11_f1_ladder`) was not redrawn; it still shows the
+    +0.30 W bar.

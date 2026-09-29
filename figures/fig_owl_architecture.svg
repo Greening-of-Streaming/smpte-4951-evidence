@@ -1,0 +1,215 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 810" width="1600" height="810" font-family="Arial, Helvetica, Liberation Sans, sans-serif">
+  <!-- fig_owl_architecture.svg: OWL, the instrumented host and the client decode rig (Section 3).
+       Drawn 2026-09-27. Palette: GoS deck. Hand-authored; edit the SVG, re-render with the
+       command in figures/README.md. Device set follows Table 1 (eight devices, the LG C2 being
+       both a device under test and the shared display). -->
+  <defs>
+    <marker id="navyArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f2236"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#56895a"/>
+    </marker>
+    <marker id="blueArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7fb3d5"/>
+    </marker>
+    <!-- plug symbol, 40 px wide, origin at centre -->
+    <g id="plug">
+      <circle cx="0" cy="0" r="19" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <path d="M-12,5 A13,13 0 1,1 12,5" fill="none" stroke="#68a06a" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="0" y1="5" x2="-6" y2="-7" stroke="#1f2236" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+  </defs>
+  <rect width="1600" height="810" fill="#ffffff"/>
+
+  <!-- ======================= HOST (left) ======================= -->
+  <rect x="50" y="60" width="600" height="560" rx="14" fill="#f6f6f6" stroke="#1f2236" stroke-width="2"/>
+  <text x="350" y="98" text-anchor="middle" font-size="22" font-weight="bold" fill="#1f2236">OWL measurement host</text>
+  <text x="350" y="122" text-anchor="middle" font-size="15" fill="#5b5e70">one machine: AMD Ryzen 9 7900, NVIDIA RTX 5080, Ubuntu 24, idle about 79 W</text>
+
+  <!-- mains -> two meters -> host -->
+  <text x="82" y="190" text-anchor="middle" font-size="14" fill="#5b5e70">mains</text>
+  <line x1="82" y1="200" x2="82" y2="240" stroke="#1f2236" stroke-width="2.5"/>
+  <line x1="82" y1="240" x2="118" y2="240" stroke="#1f2236" stroke-width="2.5"/>
+  <use href="#plug" x="140" y="240"/>
+  <line x1="160" y1="240" x2="196" y2="240" stroke="#1f2236" stroke-width="2.5"/>
+  <use href="#plug" x="218" y="240"/>
+  <line x1="238" y1="240" x2="280" y2="240" stroke="#1f2236" stroke-width="2.5" marker-end="url(#navyArrow)"/>
+  <text x="165" y="278" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2236">two P110 meters in series</text>
+  <text x="165" y="296" text-anchor="middle" font-size="13" fill="#5b5e70">local protocol · 1 s · milliwatts</text>
+  <text x="165" y="313" text-anchor="middle" font-size="13" fill="#5b5e70">firmware pinned to 1.3.1</text>
+
+  <!-- host box -->
+  <rect x="284" y="150" width="340" height="180" rx="10" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="454" y="180" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f2236">GoS1</text>
+  <rect x="300" y="196" width="150" height="54" rx="6" fill="#1f2236"/>
+  <text x="375" y="219" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">encode workloads</text>
+  <text x="375" y="238" text-anchor="middle" font-size="12" fill="#b6d3ac">CPU · NVENC</text>
+  <rect x="458" y="196" width="150" height="54" rx="6" fill="#1f2236"/>
+  <text x="533" y="219" text-anchor="middle" font-size="14" font-weight="bold" fill="#ffffff">rig controller</text>
+  <text x="533" y="238" text-anchor="middle" font-size="12" fill="#b6d3ac">orchestration · origin</text>
+  <text x="454" y="278" text-anchor="middle" font-size="13" fill="#5b5e70">dedicated measurement mode: background timers off,</text>
+  <text x="454" y="296" text-anchor="middle" font-size="13" fill="#5b5e70">one job at a time under a lock</text>
+  <text x="454" y="318" text-anchor="middle" font-size="13" fill="#5b5e70">VMAF scored outside the energy window</text>
+
+  <!-- per-run envelope -->
+  <rect x="80" y="360" width="540" height="150" rx="10" fill="#ffffff" stroke="#1f2236" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="350" y="388" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2236">per-run envelope, the same on both benches</text>
+  <g font-size="13" fill="#1f2236" text-anchor="middle">
+    <rect x="96" y="405" width="118" height="60" rx="6" fill="#e7e6e6"/>
+    <text x="155" y="428" font-weight="bold">idle guard</text>
+    <text x="155" y="446" fill="#5b5e70">wait for the floor</text>
+    <rect x="228" y="405" width="118" height="60" rx="6" fill="#e7e6e6"/>
+    <text x="287" y="428" font-weight="bold">baseline</text>
+    <text x="287" y="446" fill="#5b5e70">1 s polls, W_base</text>
+    <rect x="360" y="405" width="118" height="60" rx="6" fill="#e7e6e6"/>
+    <text x="419" y="428" font-weight="bold">workload</text>
+    <text x="419" y="446" fill="#5b5e70">ΔW, ΔW × Δt</text>
+    <rect x="492" y="405" width="112" height="60" rx="6" fill="#68a06a"/>
+    <text x="548" y="428" font-weight="bold" fill="#ffffff">confidence flag</text>
+    <text x="548" y="446" fill="#ffffff">Φ(ΔW / SE)</text>
+  </g>
+  <line x1="214" y1="435" x2="226" y2="435" stroke="#1f2236" stroke-width="2" marker-end="url(#navyArrow)"/>
+  <line x1="346" y1="435" x2="358" y2="435" stroke="#1f2236" stroke-width="2" marker-end="url(#navyArrow)"/>
+  <line x1="478" y1="435" x2="490" y2="435" stroke="#1f2236" stroke-width="2" marker-end="url(#navyArrow)"/>
+  <text x="350" y="492" text-anchor="middle" font-size="13" fill="#5b5e70">stored per run: parameters, raw samples, marginal and attributional energy, flag</text>
+
+  <!-- results -->
+  <g>
+    <ellipse cx="350" cy="548" rx="80" ry="11" fill="#7fb3d5" stroke="#1f2236" stroke-width="2"/>
+    <rect x="270" y="548" width="160" height="34" fill="#7fb3d5"/>
+    <line x1="270" y1="548" x2="270" y2="582" stroke="#1f2236" stroke-width="2"/>
+    <line x1="430" y1="548" x2="430" y2="582" stroke="#1f2236" stroke-width="2"/>
+    <ellipse cx="350" cy="582" rx="80" ry="11" fill="#7fb3d5" stroke="#1f2236" stroke-width="2"/>
+    <text x="350" y="571" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2236">results, public by link</text>
+  </g>
+  <line x1="350" y1="510" x2="350" y2="533" stroke="#1f2236" stroke-width="2" marker-end="url(#navyArrow)"/>
+
+  <!-- host <-> rig links -->
+  <line x1="650" y1="230" x2="705" y2="230" stroke="#56895a" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+  <text x="678" y="212" text-anchor="middle" font-size="12" fill="#56895a">control</text>
+  <line x1="650" y1="300" x2="705" y2="300" stroke="#7fb3d5" stroke-width="2.5" marker-end="url(#blueArrow)"/>
+  <text x="678" y="282" text-anchor="middle" font-size="12" fill="#7fb3d5">content</text>
+  <line x1="705" y1="370" x2="654" y2="370" stroke="#1f2236" stroke-width="2.5" marker-end="url(#navyArrow)"/>
+  <text x="678" y="352" text-anchor="middle" font-size="12" fill="#1f2236">meters</text>
+
+  <!-- ======================= RIG (right) ======================= -->
+  <rect x="710" y="60" width="840" height="560" rx="14" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+  <text x="1130" y="98" text-anchor="middle" font-size="22" font-weight="bold" fill="#1f2236">client decode rig</text>
+  <text x="1130" y="122" text-anchor="middle" font-size="15" fill="#5b5e70">the devices of Table 1 and later additions, one meter each, read at 1 s in parallel · shared display metered separately</text>
+
+  <!-- LAN bar -->
+  <rect x="740" y="142" width="790" height="52" rx="8" fill="#e7e6e6"/>
+  <text x="1135" y="164" text-anchor="middle" font-size="14" fill="#1f2236">bench LAN: Ethernet switch and lab Wi-Fi · content served from the origin on the host</text>
+  <text x="1135" y="184" text-anchor="middle" font-size="13" fill="#5b5e70">control per device: SSH · ADB · Apple TV protocol · Roku protocol · webOS</text>
+  <line x1="740" y1="230" x2="740" y2="196" stroke="#56895a" stroke-width="2.5"/>
+  <line x1="745" y1="300" x2="745" y2="196" stroke="#7fb3d5" stroke-width="2.5"/>
+
+  <!-- seven client slots: 4 + 3 -->
+  <g id="slots" font-size="12" text-anchor="middle">
+    <!-- row 1 -->
+    <g transform="translate(760,215)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="13" font-weight="bold" fill="#1f2236">Raspberry Pi 5</text>
+      <text x="70" y="108" fill="#5b5e70">software decode · SSH</text>
+      <text x="70" y="123" fill="#5b5e70">Ethernet</text>
+    </g>
+    <g transform="translate(910,215)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="12" font-weight="bold" fill="#1f2236">Raspberry Pi 400</text>
+      <text x="70" y="108" fill="#5b5e70">hardware H.264 · SSH</text>
+      <text x="70" y="123" fill="#5b5e70">Ethernet</text>
+    </g>
+    <g transform="translate(1060,215)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="12" font-weight="bold" fill="#1f2236">Google TV Streamer</text>
+      <text x="70" y="108" fill="#5b5e70">MediaTek · ADB</text>
+      <text x="70" y="123" fill="#5b5e70">Ethernet</text>
+    </g>
+    <g transform="translate(1210,215)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="13" font-weight="bold" fill="#1f2236">Fire TV Stick 4K</text>
+      <text x="70" y="108" fill="#5b5e70">MediaTek · ADB</text>
+      <text x="70" y="123" fill="#5b5e70">Wi-Fi only</text>
+    </g>
+    <!-- other decode devices: generic slot for additions after Table 1 -->
+    <g transform="translate(1370,215)">
+      <rect x="0" y="0" width="160" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="80" y="26"/>
+      <rect x="22" y="52" width="128" height="34" rx="5" fill="#ffffff" stroke="#aeb3c4" stroke-width="1.5"/>
+      <rect x="16" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="80" y="80" font-size="12" font-weight="bold" fill="#1f2236">other decode devices</text>
+      <text x="80" y="108" fill="#5b5e70">W5, Xiaomi Gen 3, others</text>
+      <text x="80" y="123" fill="#5b5e70">added since · one meter each</text>
+    </g>
+    <!-- row 2 -->
+    <g transform="translate(760,365)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="13" font-weight="bold" fill="#1f2236">Bbox (operator)</text>
+      <text x="70" y="108" fill="#5b5e70">Marvell, no AV1 · ADB</text>
+      <text x="70" y="123" fill="#5b5e70">Ethernet</text>
+    </g>
+    <g transform="translate(910,365)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="13" font-weight="bold" fill="#1f2236">Apple TV 4K</text>
+      <text x="70" y="108" fill="#5b5e70">A10X · Apple protocol</text>
+      <text x="70" y="123" fill="#5b5e70">Ethernet</text>
+    </g>
+    <g transform="translate(1060,365)">
+      <rect x="0" y="0" width="140" height="130" rx="8" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <use href="#plug" x="70" y="26"/>
+      <rect x="6" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
+      <text x="70" y="80" font-size="13" font-weight="bold" fill="#1f2236">Roku Express 4K</text>
+      <text x="70" y="108" fill="#5b5e70">device-total · Roku</text>
+      <text x="70" y="123" fill="#5b5e70">Wi-Fi only</text>
+    </g>
+  </g>
+
+  <!-- shared display: LG C2, its own meter, own slot -->
+  <g transform="translate(1210,365)">
+    <rect x="0" y="0" width="320" height="230" rx="8" fill="#f6f6f6" stroke="#1f2236" stroke-width="2" stroke-dasharray="5 4"/>
+    <use href="#plug" x="160" y="26"/>
+    <rect x="40" y="58" width="240" height="120" rx="6" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+    <rect x="50" y="68" width="220" height="100" fill="#e7e6e6"/>
+    <text x="160" y="112" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2236">LG OLED C2, 55 inch</text>
+    <text x="160" y="132" text-anchor="middle" font-size="12" fill="#5b5e70">shared display for every device above</text>
+    <text x="160" y="150" text-anchor="middle" font-size="12" fill="#5b5e70">(HDMI, one input each) and a device itself</text>
+    <line x1="130" y1="178" x2="190" y2="178" stroke="#1f2236" stroke-width="2.5"/>
+    <text x="160" y="205" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2236">own meter: display energy never enters</text>
+    <text x="160" y="221" text-anchor="middle" font-size="12" font-weight="bold" fill="#1f2236">another device's figure</text>
+  </g>
+  <!-- HDMI feed lines to the display (schematic: one bus) -->
+
+  <!-- what every clip carries -->
+  <rect x="740" y="520" width="450" height="80" rx="8" fill="#ffffff" stroke="#56895a" stroke-width="2"/>
+  <text x="965" y="545" text-anchor="middle" font-size="14" font-weight="bold" fill="#1f2236">every clip: black, white, black marker head (5 s)</text>
+  <text x="965" y="565" text-anchor="middle" font-size="12" fill="#5b5e70">segmented from the power trace: content reached the screen</text>
+  <text x="965" y="585" text-anchor="middle" font-size="12" fill="#5b5e70">decoder allocation logged with the row where the device can be asked</text>
+
+  <!-- ======================= footer ======================= -->
+  <text x="50" y="670" font-size="14" fill="#5b5e70">Metering boundary: each dashed slot is one wall meter. The display sits in its own slot, so a device figure is decode plus its own output path, never the display.</text>
+  <text x="50" y="694" font-size="14" fill="#5b5e70">Scope: device layer on a lab bench. Network, CDN and data centre are outside every OWL number; content reaches the rig from the origin on the host over the bench LAN.</text>
+  <text x="50" y="718" font-size="14" fill="#5b5e70">The rig's meters are the same plug and protocol as REM's LAN path (Figure 1); the two readers agree within 0.2% at 1 s [C8].</text>
+
+  <!-- legend -->
+  <line x1="50" y1="770" x2="100" y2="770" stroke="#56895a" stroke-width="2.5"/>
+  <text x="108" y="775" font-size="13" fill="#5b5e70">control</text>
+  <line x1="190" y1="770" x2="240" y2="770" stroke="#7fb3d5" stroke-width="2.5"/>
+  <text x="248" y="775" font-size="13" fill="#5b5e70">content over LAN</text>
+  <line x1="390" y1="770" x2="440" y2="770" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="448" y="775" font-size="13" fill="#5b5e70">meter readings to the host</text>
+  <rect x="640" y="760" width="40" height="20" rx="4" fill="none" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="688" y="775" font-size="13" fill="#5b5e70">one metering boundary (one wall meter)</text>
+</svg>

@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" width="1600" height="800" font-family="Arial, Helvetica, Liberation Sans, sans-serif">
+  <!-- fig_measurement.svg: Figure 1, the measurement architecture (REM, its two read paths, LEM).
+       Drawn 2026-09-27 from Ben's sketch (sources/collection.pptx). Palette: GoS deck.
+       Hand-authored; edit the SVG, re-render the PNG with the command in figures/README.md. -->
+  <defs>
+    <marker id="navyArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1f2236"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#56895a"/>
+    </marker>
+    <marker id="greyArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#aeb3c4"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="800" fill="#ffffff"/>
+
+  <!-- ================= REM (left) ================= -->
+  <rect x="120" y="120" width="300" height="330" rx="14" fill="#f6f6f6" stroke="#1f2236" stroke-width="2"/>
+  <text x="270" y="158" text-anchor="middle" font-size="24" font-weight="bold" fill="#1f2236">REM</text>
+  <text x="270" y="184" text-anchor="middle" font-size="16" fill="#5b5e70">Remote Energy Measurement</text>
+  <rect x="150" y="205" width="240" height="90" rx="8" fill="#1f2236"/>
+  <text x="270" y="236" text-anchor="middle" font-size="18" font-weight="bold" fill="#ffffff">collector</text>
+  <text x="270" y="260" text-anchor="middle" font-size="15" fill="#b6d3ac">experiments · device groups</text>
+  <text x="270" y="280" text-anchor="middle" font-size="15" fill="#b6d3ac">session windows · export</text>
+  <!-- store cylinder -->
+  <g>
+    <ellipse cx="270" cy="345" rx="70" ry="14" fill="#7fb3d5" stroke="#1f2236" stroke-width="2"/>
+    <rect x="200" y="345" width="140" height="60" fill="#7fb3d5" stroke="none"/>
+    <line x1="200" y1="345" x2="200" y2="405" stroke="#1f2236" stroke-width="2"/>
+    <line x1="340" y1="345" x2="340" y2="405" stroke="#1f2236" stroke-width="2"/>
+    <ellipse cx="270" cy="405" rx="70" ry="14" fill="#7fb3d5" stroke="#1f2236" stroke-width="2"/>
+    <text x="270" y="384" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2236">time-series store</text>
+  </g>
+  <line x1="270" y1="295" x2="270" y2="329" stroke="#1f2236" stroke-width="2" marker-end="url(#navyArrow)"/>
+
+  <!-- ================= LEM (below REM) ================= -->
+  <rect x="120" y="520" width="300" height="110" rx="14" fill="#ffffff" stroke="#56895a" stroke-width="2.5"/>
+  <text x="270" y="552" text-anchor="middle" font-size="22" font-weight="bold" fill="#1f2236">LEM</text>
+  <text x="270" y="576" text-anchor="middle" font-size="15" fill="#5b5e70">Local Energy Measurement</text>
+  <text x="270" y="600" text-anchor="middle" font-size="15" fill="#56895a">reader on the participant's own network</text>
+  <text x="270" y="620" text-anchor="middle" font-size="15" fill="#56895a">samples kept on disk · batches uploaded</text>
+  <!-- LEM -> store -->
+  <line x1="270" y1="520" x2="270" y2="424" stroke="#56895a" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+  <text x="290" y="470" font-size="14" fill="#56895a">upload; offline runs</text>
+  <text x="290" y="488" font-size="14" fill="#56895a">back-filled later</text>
+
+  <!-- ================= cloud path (top) ================= -->
+  <!-- cloud shape -->
+  <g fill="#f6f6f6" stroke="#aeb3c4" stroke-width="2.5">
+    <ellipse cx="700" cy="230" rx="60" ry="44"/>
+    <ellipse cx="770" cy="205" rx="70" ry="52"/>
+    <ellipse cx="850" cy="228" rx="62" ry="46"/>
+    <ellipse cx="775" cy="250" rx="110" ry="42"/>
+  </g>
+  <g fill="#f6f6f6" stroke="none">
+    <ellipse cx="700" cy="232" rx="56" ry="40"/>
+    <ellipse cx="770" cy="207" rx="66" ry="48"/>
+    <ellipse cx="850" cy="230" rx="58" ry="42"/>
+    <ellipse cx="775" cy="250" rx="106" ry="38"/>
+  </g>
+  <text x="775" y="222" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2236">vendor cloud</text>
+  <text x="775" y="246" text-anchor="middle" font-size="15" fill="#5b5e70">TP-Link API</text>
+  <!-- plug -> cloud -> REM -->
+  <line x1="1080" y1="230" x2="922" y2="230" stroke="#aeb3c4" stroke-width="2.5" marker-end="url(#greyArrow)"/>
+  <line x1="632" y1="230" x2="428" y2="230" stroke="#aeb3c4" stroke-width="2.5" marker-end="url(#greyArrow)"/>
+  <text x="530" y="212" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2236">cloud path</text>
+  <text x="530" y="252" text-anchor="middle" font-size="14" fill="#5b5e70">10 s · integer watts</text>
+  <text x="530" y="270" text-anchor="middle" font-size="14" fill="#5b5e70">every 2026 field finding</text>
+  <text x="530" y="288" text-anchor="middle" font-size="14" fill="#5b5e70">9 to 11% low on a 4 W device</text>
+
+  <!-- ================= LAN path (bottom) ================= -->
+  <line x1="1080" y1="575" x2="428" y2="575" stroke="#56895a" stroke-width="2.5" marker-end="url(#greenArrow)"/>
+  <rect x="640" y="540" width="270" height="70" rx="10" fill="#ffffff" stroke="#56895a" stroke-width="2"/>
+  <text x="775" y="567" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2236">participant LAN</text>
+  <text x="775" y="592" text-anchor="middle" font-size="15" fill="#5b5e70">plug's local protocol, no cloud</text>
+  <text x="530" y="557" text-anchor="middle" font-size="15" font-weight="bold" fill="#1f2236">LAN path (since July 2026)</text>
+  <text x="530" y="600" text-anchor="middle" font-size="14" fill="#56895a">down to 1 s · milliwatts</text>
+  <text x="530" y="618" text-anchor="middle" font-size="14" fill="#56895a">0.2% of a bench reader at 1 s</text>
+
+  <!-- ================= smart plug (middle right) ================= -->
+  <g transform="translate(1080,400)">
+    <circle cx="0" cy="0" r="58" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+    <!-- gauge arc -->
+    <path d="M-38,14 A40,40 0 1,1 38,14" fill="none" stroke="#68a06a" stroke-width="7" stroke-linecap="round"/>
+    <line x1="0" y1="14" x2="-18" y2="-22" stroke="#1f2236" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="0" cy="14" r="5" fill="#1f2236"/>
+  </g>
+  <text x="1080" y="490" text-anchor="middle" font-size="17" font-weight="bold" fill="#1f2236">smart plug, one per device</text>
+  <text x="1080" y="512" text-anchor="middle" font-size="14" fill="#5b5e70">TP-Link Tapo P110 · reports milliwatts</text>
+  <text x="1080" y="530" text-anchor="middle" font-size="14" fill="#5b5e70">the same plug read two ways</text>
+  <!-- plug to the two paths -->
+  <path d="M1080,342 L1080,230" fill="none" stroke="#aeb3c4" stroke-width="2.5"/>
+  <path d="M1080,458 L1080,575" fill="none" stroke="#56895a" stroke-width="2.5"/>
+  <!-- devices -> plug -->
+  <line x1="1250" y1="400" x2="1148" y2="400" stroke="#1f2236" stroke-width="2.5" marker-end="url(#navyArrow)"/>
+  <text x="1199" y="388" text-anchor="middle" font-size="13" fill="#5b5e70">mains</text>
+
+  <!-- ================= measured devices (right) ================= -->
+  <rect x="1250" y="120" width="300" height="510" rx="14" fill="#ffffff" stroke="#aeb3c4" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="1400" y="158" text-anchor="middle" font-size="20" font-weight="bold" fill="#1f2236">measured devices</text>
+  <text x="1400" y="182" text-anchor="middle" font-size="15" fill="#5b5e70">in participants' homes, behind the plug</text>
+  <!-- TV -->
+  <rect x="1300" y="215" width="200" height="112" rx="6" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <rect x="1310" y="225" width="180" height="90" fill="#e7e6e6"/>
+  <line x1="1370" y1="327" x2="1430" y2="327" stroke="#1f2236" stroke-width="2.5"/>
+  <line x1="1400" y1="327" x2="1400" y2="345" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="1400" y="368" text-anchor="middle" font-size="15" fill="#1f2236">television (OLED, LCD, plasma, 8K)</text>
+  <!-- STB -->
+  <rect x="1290" y="400" width="110" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <circle cx="1385" cy="417" r="4" fill="#68a06a"/>
+  <text x="1345" y="458" text-anchor="middle" font-size="15" fill="#1f2236">streaming box</text>
+  <!-- single-board player -->
+  <rect x="1425" y="396" width="80" height="44" rx="4" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <g stroke="#1f2236" stroke-width="2">
+    <line x1="1433" y1="396" x2="1433" y2="386"/><line x1="1443" y1="396" x2="1443" y2="386"/>
+    <line x1="1453" y1="396" x2="1453" y2="386"/><line x1="1463" y1="396" x2="1463" y2="386"/>
+    <line x1="1473" y1="396" x2="1473" y2="386"/><line x1="1483" y1="396" x2="1483" y2="386"/>
+    <line x1="1493" y1="396" x2="1493" y2="386"/>
+  </g>
+  <rect x="1445" y="408" width="24" height="20" fill="#e7e6e6" stroke="#1f2236" stroke-width="1.5"/>
+  <text x="1465" y="458" text-anchor="middle" font-size="15" fill="#1f2236">single-board player</text>
+  <!-- server hosts (Nov 2025) -->
+  <line x1="1270" y1="485" x2="1530" y2="485" stroke="#e7e6e6" stroke-width="2"/>
+  <g fill="#ffffff" stroke="#1f2236" stroke-width="2.5">
+    <rect x="1285" y="500" width="80" height="22" rx="3"/>
+    <rect x="1285" y="526" width="80" height="22" rx="3"/>
+    <rect x="1285" y="552" width="80" height="22" rx="3"/>
+  </g>
+  <g fill="#68a06a"><circle cx="1297" cy="511" r="3"/><circle cx="1297" cy="537" r="3"/><circle cx="1297" cy="563" r="3"/></g>
+  <text x="1380" y="519" font-size="14" fill="#1f2236">encode and packaging</text>
+  <text x="1380" y="539" font-size="14" fill="#1f2236">hosts (November 2025)</text>
+  <text x="1380" y="561" font-size="13" fill="#5b5e70">rack PDU, SNMP, 4 s</text>
+  <text x="1400" y="608" text-anchor="middle" font-size="14" fill="#5b5e70">July 2026: 10 devices, 5 households, 4 countries</text>
+  <!-- PDU path into REM (dotted, along the bottom) -->
+  <path d="M1285,585 L1230,585 L1230,690 L80,690 L80,380 L150,380" fill="none" stroke="#aeb3c4" stroke-width="2" stroke-dasharray="4 5"/>
+  <path d="M150,380 L192,380" fill="none" stroke="#aeb3c4" stroke-width="2" marker-end="url(#greyArrow)"/>
+  <text x="785" y="682" text-anchor="middle" font-size="13" fill="#5b5e70">server-side readings (PDU, 4 s) into the same store</text>
+
+  <!-- ================= boundary and OWL note ================= -->
+  <text x="120" y="745" font-size="14" fill="#5b5e70">Measurement boundary: the device's mains socket and the server rack's PDU. Encoder output, CDN, and access network are not metered.</text>
+  <text x="120" y="768" font-size="14" fill="#5b5e70">OWL (Section 3) reads the same plug over the same local protocol on its benches; the two readers agree within 0.2% at 1 s [C8].</text>
+
+  <!-- legend -->
+  <line x1="1250" y1="745" x2="1300" y2="745" stroke="#aeb3c4" stroke-width="2.5"/>
+  <text x="1308" y="750" font-size="13" fill="#5b5e70">cloud path</text>
+  <line x1="1400" y1="745" x2="1450" y2="745" stroke="#56895a" stroke-width="2.5"/>
+  <text x="1458" y="750" font-size="13" fill="#5b5e70">LAN path</text>
+</svg>

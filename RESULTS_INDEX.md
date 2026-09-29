@@ -197,6 +197,18 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 - **Paper role:** Core evidence for the codec-assumption narrative
   (codec cost is a property of silicon coverage, not of the codec);
   extends C5/C6 and partially supersedes them where re-measured.
+- **⚠ 2026-09-27 amendment (F1, Figure 9 GTV bar):** the GTV
+  denominator re-measured on the F1 recipe (local BBB H.264, C2 HDMI_1,
+  n=3, eye-checked) = **+0.613 W** (sd 0.047, 🟢), against F1's n=1
+  +0.298 W. The ladder becomes **2.1–3.3×**, not 4.4–6.8×. The ratios
+  are 🔴: every Pi numerator is a single July row. "4–7×" should not be
+  quoted; Figure 9 is not redrawn.
+- **⚠ 2026-09-27 amendment (C25):** the F7/F11 codec matrix (old
+  Figure 8) is superseded. Its Fire TV/GTV H.264 cells and GTV AV1
+  cells were paused-player or sleeping-box rows. The Bbox AV1 +1.4 W is
+  a ~5 fps software playback, not a decode cost. Hardware decode
+  re-measured at +0.25–0.51 W on both boxes. See
+  `digests/2026-09-c25-decode-rediag.md`.
 
 ## C13 — R11: AV1 Film-Grain Synthesis coupling (2026-08-09)
 
@@ -528,6 +540,139 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
   limitation rather than adding a new finding. Also the fourth
   independent device (after MediaTek ×2, Marvell) confirming the
   hardware/software-fallback codec-gap shape on a clean ΔW basis.
+- **⚠ 2026-09-27 amendment (handoff 27b item 1):** the fallback plays in
+  real time. BBB × H.264/AV1/VP9, n=3, screen mode (HDMI_3), every row
+  eye-checked smooth. AV1/VP9 cost **+1.22 / +1.11 W** over H.264 in
+  absolute playback watts (sd ≤0.11 W, 🟢), and +1.03 / +1.00 W on the
+  ΔW basis once two tvOS idle-swing baselines are excluded (n=2, 🟡).
+  Unlike the Bbox (C25) and the W5 (C27), this is a real viewing cost.
+  See the digest's 2026-09-27 amendment.
+
+## C25 — Figure 8 re-diagnosis: the July negatives were playback that was not happening (2026-09-27)
+
+- **Track:** OWL decode rig, protocol v3, screen mode (panel lit on the
+  box's own input; GTV re-cabled to HDMI_1 for this). GTV + Bbox ×
+  Meridian H.264 / HEVC / AV1, n=3, interleaved, player verified
+  PLAYING, Bbox presented fps sampled. Also a July-condition arm (GTV
+  unwatched, n=3), a Lab-E panel-state query over C11/C17/C18/F9, and
+  reproduction tests of the July failure mechanisms on the GTV and the
+  Fire TV.
+- **Status:** 🟢 F1 (hardware decode +0.25–0.51 W, n=3 per cell), F2
+  (Bbox AV1 = ~5 fps failed playback, n=6), F6 (watched = unwatched,
+  n=3 each); 🟡 F3 (paused-player mechanism, reproduced n=1 per box),
+  F4 (GTV asleep in the parallel AV1 rows; trigger 🔴), F5 (panel
+  standby not the cause; half the rows have no panel record).
+- **Headline:** Figure 8's anomalies were not panel standby. Every C11
+  H.264 row on the Fire TV and the GTV was a paused player: resumed at a
+  remembered position, a defect fixed 16 days later in wattlab
+  `fec0065`, and reproduced today on both boxes. The GTV's parallel AV1
+  rows were the box asleep about 9 s into playback. With playback
+  verified, hardware decode costs +0.47 / +0.51 / +0.43 W (GTV H.264 /
+  HEVC / AV1) and +0.33 / +0.25 W (Bbox H.264 / HEVC): no negative
+  cell, none inside the old ±0.2 W band. **The Bbox's AV1 "+1.4 W"
+  (C11 F11, C17) is a software decoder presenting ~5 fps against
+  50 fps**, the cost of failing to play, not of watching AV1.
+  **Not every negative is a playback failure:** C17 Bbox Kranjska rows
+  (PLAYING recorded) stay unexplained, and the F9 Fire TV negatives are
+  contaminated baselines.
+- **Digest:** `digests/2026-09-c25-decode-rediag.md` (+ `.csv`)
+- **Figure:** `figures/fig_c25_codec_matrix` replaces Figure 8
+  (`fig_c11_f7_f11_codec_matrix`, retired, in git history only).
+  `drafts/04-findings.md` still points at the old file.
+- **Paper role:** Corrects §4.2's codec-matrix claim and figure.
+  Qualifies C11 F7/F11 and the C17 Bbox AV1 rows: every
+  software-fallback cell needs a presented-fps check before it is cited
+  as a decode cost (the Apple TV cells in C19/C24 are still unchecked).
+  Overturns the 2026-08-30 figure sweep's "codec matrix clean" verdict.
+
+## C26 — Bbox AV1 plays at 720p30 (+1.5 W); 1080p30 still fails (2026-09-27)
+
+- **Track:** OWL decode rig, protocol v3, screen mode (`panel:HDMI_2`),
+  Bbox × Meridian AV1/H.264 at 720p30 and 1080p30 (VMAF-matched
+  fixtures), n=3 per cell, presented fps sampled in-window on every row
+  (batch `20260927c26b`).
+- **Status:** 🟢 F1 (720p30 AV1 +1.508 W at full rate), F2 (1080p30 AV1
+  fails, 14–17 fps), F3 (hardware H.264 at 30 fps ≈ idle, a null).
+- **Headline:** The Bbox plays software AV1 in real time only at
+  720p30, where it costs **+1.51 W**, against **−0.08 W** for hardware
+  H.264 at the same rung: **+1.59 W to watch AV1 instead of H.264**.
+  This is the first real software-AV1 viewing cost on an operator box,
+  replacing C11 F11's withdrawn +1.4 W. 1080p30 fails (as did 1080p60,
+  C25 F2). The Bbox's hardware H.264 at light 30 fps content reads at
+  or below idle: a candidate explanation for C17's unexplained Bbox
+  negatives.
+- **Digest:** `digests/2026-09-c26-bbox-av1-rungs.md` (+ `.csv`)
+- **Paper role:** §4.4's operator-CPE AV1 number, in the form the
+  evidence supports: a cost at the rung that plays, plus the rungs that
+  don't.
+
+## C27 — TV Box W5 (Allwinner H618): hardware decode not codec-flat; AV1 fails in the flattering direction (2026-09-21→22)
+
+- **Track:** OWL decode rig, protocol v3, screen mode (`panel:HDMI_1`),
+  BBB iso-bitrate 1080p60 at 8 Mb/s, 1095 s windows, n=3 × 4 codecs
+  (batch `3e54b322a9b4`), plus a same-night GTV comparator
+  (`4b94ea5075f3`). Digest of existing rows, no new run.
+- **Status:** 🟢 F1 (codec spread resolved at n=3), F2 (AV1 rows are a
+  failed playback); 🔴 F3 (W5 vs GTV 1.7×: GTV n=2).
+- **Headline:** On the H618's own decoders, H.264 +1.073 W vs HEVC
+  +0.966 / VP9 +0.971 W: +0.10 W, CI clear of zero. This is a
+  resolvable codec spread where the MT8696 and Marvell show ≤0.08 W. AV1
+  (no decoder, in-app software) presents 1.7 fps and reads +0.442 W, the
+  "cheapest" codec, while passing every harness gate. This is the second
+  instance of C25 F2's trap, erring low where the Bbox errs high.
+- **Digest:** `digests/2026-09-w5-allwinner.md`
+- **Paper role:** Qualifies "codec choice is nearly free on decode
+  silicon" to "cheap, by an amount that depends on the silicon". It is
+  also the second worked example for §4.2 of why presented frame rate
+  must gate any codec-energy row.
+
+## C28 — Review checks on the shortened draft: accounting lenses, codec intervals, Figure 7 fps, provenance (2026-09-30)
+
+- **Track:** desk recomputation over stored OWL rows (encode: S53+VP9
+  parity, C17, R14; decode: C25/C27/C17 hardware sets plus Pi 5, Apple
+  TV and C26 contrasts) and fact checks from logs and code. No rig time.
+  One read-only firmware query per plug.
+- **Status:**
+  - 🟢 R1 (lens mechanism and CPU bound; C17/R14 n=3), 🟡 for the S53
+    magnitudes (n=1, nominal W_base).
+  - 🟢 R2 for the observed codec range under hardware decode; 🔴 for
+    "≤0.1 W" read as a bound.
+  - 🟢 R3 (fps counter semantics, n=3 rows per cell); 🔴 for the Bbox
+    HDMI link mode (never read).
+  - 🟢 R4 (figure provenance); 🟡 R6 (device-own idle coefficients).
+- **Headline:**
+  - **"Leaves every ratio between encoders unchanged" is false.**
+    Attribution multiplies each row by 1 + W_base/ΔW. CPU rows ×2.1–2.3
+    and NVENC ×2.0–2.8. Ratios among CPU encoders move ≤8 % with no
+    ranking change; CPU/NVENC ratios move −24 … +10 %, with CPU dearer
+    at every matched codec and bitrate.
+  - **"About 0.1 W or less" is an observed range, not a bound.** The
+    largest hardware codec difference is +0.107 W (W5 H.264 − HEVC,
+    CI [+0.04, +0.17]). The 95 % intervals reach ±0.27 W at n=3, and
+    only 13/37 pairs lie inside ±0.1 W. Bounding needs n≈7 per cell on
+    the GTV, and cannot be done on the W5.
+  - **Bbox fps.** The Bbox presents at most 50/s (50 Hz output), so
+    AV1 on 59.94 fps content presents ~5 of 59.94. At 1080p30 it
+    presents 14–17 of 30, in the measurement window.
+  - **Figures.** Figures 1, 2, 4 and 6 have no generating command, and
+    Figure 5's PNG is a render of a hand-edited SVG.
+  - **Fact checks:**
+    - C18 Ethernet = local rests on one box at n=3.
+    - C8's 0.2 % is one run and read-path agreement, not accuracy.
+    - The host's first-run idle gap is still open; the rig is covered.
+    - The host outer meter is on fw **1.4.0**, which contradicts
+      §3's "pinned to 1.3.1".
+    - The host drift coefficient is 2–4× optimistic on most client
+      boxes, but no C25–C27 flag changes.
+    - There is no reference meter.
+- **Digest:** `digests/2026-09-review-checks.md` (+ `.csv`,
+  `-lens.csv`); scripts `analysis/review_lens_ratios.py`,
+  `review_codec_diffs.py`, `device_idle_coeffs.py`.
+- **Paper role:** decides the wording of the abstract's codec sentence
+  and §3's lens sentence. The full list of draft changes is in digest
+  §4 items 1–9.
+  - Evidence-repo sync (C25–C28) is prepared and unpushed, pending
+    Ben's confirmation.
 
 ## Candidate campaigns (pending RUN_QUEUE execution)
 

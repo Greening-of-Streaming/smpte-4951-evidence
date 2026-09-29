@@ -104,8 +104,8 @@ L 515.103732 82.024164
      </g>
     </g>
     <g id="text_5">
-     <text style="font-size: 8px; font-family: 'DejaVu Sans'; fill: #52514e" transform="translate(174.721055 207.170531)">sampled window (log scale) — BBB H.264 1080p60, HTTP,</text>
-     <text style="font-size: 8px; font-family: 'DejaVu Sans'; fill: #52514e" transform="translate(214.91043 216.772719)">keep_awake pinned, n=2 per duration</text>
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; fill: #52514e" transform="translate(174.721055 207.170531)">sampled window (log scale), BBB H.264 1080p60, HTTP,</text>
+     <text style="font-size: 8px; font-family: 'DejaVu Sans'; fill: #52514e" transform="translate(214.91043 216.772719)">sleep timers pinned, n=2 per duration</text>
     </g>
    </g>
    <g id="matplotlib.axis_2">
@@ -377,8 +377,8 @@ z
    </g>
   </g>
   <g id="text_10">
-   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #0b0b0b" transform="translate(10.944 14.073443)">Real signals are green in seconds and flat through 59 min;</text>
-   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #0b0b0b" transform="translate(10.944 25.476041)">a small margin flickers at every duration — repeats beat length</text>
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #0b0b0b" transform="translate(10.944 14.073443)">Real signals are confident within seconds and flat through 59 min;</text>
+   <text style="font-size: 9.5px; font-family: 'DejaVu Sans'; fill: #0b0b0b" transform="translate(10.944 25.476041)">a small margin flickers at every duration: repeats beat length</text>
   </g>
   <g id="legend_1">
    <g id="line2d_39">
@@ -406,7 +406,7 @@ L 168.370312 283.245
 " style="fill: none; stroke: #eb6834; stroke-width: 1.6; stroke-linecap: square"/>
    </g>
    <g id="text_13">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="174.370312" y="285.87" transform="rotate(-0 174.370312 285.87)">Fire TV Stick 4K (panel dark)</text>
+    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="174.370312" y="285.87" transform="rotate(-0 174.370312 285.87)">Fire TV Stick 4K (display dark)</text>
    </g>
    <g id="line2d_42">
     <defs>
@@ -427,7 +427,7 @@ z
     </g>
    </g>
    <g id="text_14">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="316.770703" y="263.368828" transform="rotate(-0 316.770703 263.368828)">filled = Repeatable</text>
+    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="316.770703" y="263.368828" transform="rotate(-0 316.770703 263.368828)">filled: confident run</text>
    </g>
    <g id="line2d_43">
     <defs>
@@ -448,7 +448,7 @@ z
     </g>
    </g>
    <g id="text_15">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="316.770703" y="274.619414" transform="rotate(-0 316.770703 274.619414)">open = Early Insight</text>
+    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="316.770703" y="274.619414" transform="rotate(-0 316.770703 274.619414)">open: marginal run</text>
    </g>
    <g id="line2d_44">
     <defs>
@@ -472,7 +472,7 @@ z
     </g>
    </g>
    <g id="text_16">
-    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="316.770703" y="285.87" transform="rotate(-0 316.770703 285.87)">X = Need More Data</text>
+    <text style="font-size: 7.5px; font-family: 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="316.770703" y="285.87" transform="rotate(-0 316.770703 285.87)">X: run not distinguishable from idle</text>
    </g>
   </g>
  </g>

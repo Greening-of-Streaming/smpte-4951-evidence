@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 820" width="1600" height="820" font-family="Arial, Helvetica, Liberation Sans, sans-serif">
+  <!-- fig_loop.svg: the dual-track loop (Section 4). Drawn 2026-09-27. Palette: GoS deck.
+       Hand-authored; edit the SVG, re-render with the command in figures/README.md.
+       Content follows drafts/04-findings.md §4.3 (the hand-offs) and §4.1 (the turns). -->
+  <defs>
+    <marker id="navyArrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L12,6 L0,12 z" fill="#1f2236"/>
+    </marker>
+    <marker id="greenArrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L12,6 L0,12 z" fill="#56895a"/>
+    </marker>
+    <marker id="greyArrow" markerWidth="12" markerHeight="12" refX="9" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L12,6 L0,12 z" fill="#aeb3c4"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="820" fill="#ffffff"/>
+
+  <!-- ================= the two tracks ================= -->
+  <!-- REM node -->
+  <rect x="60" y="150" width="340" height="250" rx="16" fill="#f6f6f6" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="230" y="192" text-anchor="middle" font-size="24" font-weight="bold" fill="#1f2236">REM · the field</text>
+  <text x="230" y="220" text-anchor="middle" font-size="15" fill="#5b5e70">real homes, real content, real networks</text>
+  <text x="230" y="258" text-anchor="middle" font-size="15" fill="#1f2236">finds where effects exist</text>
+  <text x="230" y="282" text-anchor="middle" font-size="14" fill="#5b5e70">many devices, confounded,</text>
+  <text x="230" y="300" text-anchor="middle" font-size="14" fill="#5b5e70">at the instrument's floor</text>
+  <text x="230" y="338" text-anchor="middle" font-size="14" fill="#5b5e70">a null is ambiguous: absent,</text>
+  <text x="230" y="356" text-anchor="middle" font-size="14" fill="#5b5e70">or present below the floor</text>
+
+  <!-- OWL node -->
+  <rect x="1200" y="150" width="340" height="250" rx="16" fill="#f6f6f6" stroke="#1f2236" stroke-width="2.5"/>
+  <text x="1370" y="192" text-anchor="middle" font-size="24" font-weight="bold" fill="#1f2236">OWL · the bench</text>
+  <text x="1370" y="220" text-anchor="middle" font-size="15" fill="#5b5e70">one host, one rig, one variable at a time</text>
+  <text x="1370" y="258" text-anchor="middle" font-size="15" fill="#1f2236">quantifies why</text>
+  <text x="1370" y="282" text-anchor="middle" font-size="14" fill="#5b5e70">few devices, controlled,</text>
+  <text x="1370" y="300" text-anchor="middle" font-size="14" fill="#5b5e70">milliwatt resolution</text>
+  <text x="1370" y="338" text-anchor="middle" font-size="14" fill="#5b5e70">a result is unambiguous and narrow:</text>
+  <text x="1370" y="356" text-anchor="middle" font-size="14" fill="#5b5e70">it says nothing about a fleet</text>
+
+  <!-- ================= the loop arrows ================= -->
+  <!-- top: field -> bench -->
+  <path d="M400,215 C600,110 1000,110 1200,215" fill="none" stroke="#1f2236" stroke-width="3" marker-end="url(#navyArrow)"/>
+  <!-- bottom: bench -> field -->
+  <path d="M1200,340 C1000,470 600,470 400,340" fill="none" stroke="#56895a" stroke-width="3" marker-end="url(#greenArrow)"/>
+
+  <!-- top labels: what the field hands the bench -->
+  <rect x="470" y="60" width="660" height="88" rx="10" fill="#ffffff" stroke="#1f2236" stroke-width="1.5"/>
+  <text x="800" y="86" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2236">the field hands the bench a question, and its scope</text>
+  <text x="800" y="110" text-anchor="middle" font-size="14" fill="#5b5e70">1. the null it cannot read: codec invisible at the socket, a set-top box reading 1, 2, and 3 W</text>
+  <text x="800" y="132" text-anchor="middle" font-size="14" fill="#5b5e70">2. the term the bench cannot see: display luminance, 10 to 25 W under content</text>
+
+  <!-- bottom labels: what the bench hands the field -->
+  <rect x="470" y="400" width="660" height="88" rx="10" fill="#ffffff" stroke="#56895a" stroke-width="1.5"/>
+  <text x="800" y="426" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2236">the bench hands the field an answer, and an instrument</text>
+  <text x="800" y="450" text-anchor="middle" font-size="14" fill="#5b5e70">3. the condition: codec cost is a property of silicon coverage; a hypothesis to test across a fleet</text>
+  <text x="800" y="472" text-anchor="middle" font-size="14" fill="#5b5e70">4. the floor that hid it sent the LAN path (LEM) into the field: 10 s and 1 W to 1 s and milliwatts</text>
+
+  <!-- axle: one instrument scale -->
+  <rect x="530" y="240" width="540" height="80" rx="40" fill="#1f2236"/>
+  <text x="800" y="272" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">one instrument scale</text>
+  <text x="800" y="294" text-anchor="middle" font-size="13" fill="#b6d3ac">same plug, same protocol: field and bench readers agree within 0.2% at 1 s</text>
+  <text x="800" y="308" text-anchor="middle" font-size="12" fill="#b6d3ac">what lets a field number and a bench number be compared at all</text>
+
+  <!-- ================= the turns ================= -->
+  <line x1="60" y1="540" x2="1540" y2="540" stroke="#e7e6e6" stroke-width="3"/>
+  <text x="60" y="525" font-size="15" font-weight="bold" fill="#1f2236">turns of the loop</text>
+
+  <!-- turn 1 -->
+  <circle cx="230" cy="540" r="9" fill="#1f2236"/>
+  <rect x="60" y="565" width="440" height="150" rx="10" fill="#ffffff" stroke="#aeb3c4" stroke-width="1.5"/>
+  <text x="80" y="592" font-size="15" font-weight="bold" fill="#1f2236">1 · November 2025</text>
+  <text x="80" y="616" font-size="13" fill="#1f2236">field: resolution explains 55% of encoder power variance;</text>
+  <text x="80" y="634" font-size="13" fill="#1f2236">on the device, luminance is the strongest correlate</text>
+  <text x="80" y="656" font-size="13" fill="#56895a">bench: measures each variable; at encode the hardware</text>
+  <text x="80" y="674" font-size="13" fill="#56895a">path outweighs the codec (Pouli et al. [3])</text>
+  <text x="80" y="700" font-size="12" fill="#5b5e70">field: Early Insight (via the published analysis) · bench: Repeatable</text>
+
+  <!-- turn 2 -->
+  <circle cx="800" cy="540" r="9" fill="#1f2236"/>
+  <rect x="580" y="565" width="440" height="150" rx="10" fill="#ffffff" stroke="#aeb3c4" stroke-width="1.5"/>
+  <text x="600" y="592" font-size="15" font-weight="bold" fill="#1f2236">2 · July 2026</text>
+  <text x="600" y="616" font-size="13" fill="#1f2236">field: codec and bitrate invisible at the socket, every</text>
+  <text x="600" y="634" font-size="13" fill="#1f2236">interval spans zero; the set-top box sits under the 1 W floor</text>
+  <text x="600" y="656" font-size="13" fill="#56895a">bench: 0.08 W or less where silicon covers the codec;</text>
+  <text x="600" y="674" font-size="13" fill="#56895a">over 1 W in software, or the stream does not play</text>
+  <text x="600" y="700" font-size="12" fill="#5b5e70">field: Repeatable within dataset · bench: Repeatable, lab-confirmed</text>
+
+  <!-- turn 3 -->
+  <circle cx="1320" cy="540" r="9" fill="#ffffff" stroke="#1f2236" stroke-width="2.5"/>
+  <rect x="1100" y="565" width="440" height="150" rx="10" fill="#ffffff" stroke="#aeb3c4" stroke-width="1.5" stroke-dasharray="7 5"/>
+  <text x="1120" y="592" font-size="15" font-weight="bold" fill="#1f2236">3 · queued</text>
+  <text x="1120" y="616" font-size="13" fill="#1f2236">field, on the LAN path at milliwatts: installed operator</text>
+  <text x="1120" y="634" font-size="13" fill="#1f2236">boxes without an AV1 block: failed playback, or a cost</text>
+  <text x="1120" y="656" font-size="13" fill="#56895a">bench: a second chipset that has an AV1 block, to test</text>
+  <text x="1120" y="674" font-size="13" fill="#56895a">hardware AV1 across vendors</text>
+  <text x="1120" y="700" font-size="12" fill="#5b5e70">Need More Data: the third turn is designed, not run</text>
+
+  <!-- footer -->
+  <text x="60" y="760" font-size="14" fill="#5b5e70">Claims made on the way were withdrawn when better instrumentation contradicted them (Table 2); the loop is also how the framework corrects itself.</text>
+  <text x="60" y="784" font-size="14" fill="#5b5e70">Scope: device boundary on both tracks. Network, CDN, and data centre are outside every number in this figure.</text>
+</svg>

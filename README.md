@@ -8,7 +8,7 @@ paper #4951).
 Every bracketed working citation in the paper — `[C11 F7]` means
 campaign 11, finding 7 — resolves here:
 
-- `RESULTS_INDEX.md` — one entry per measurement campaign (C1–C24),
+- `RESULTS_INDEX.md` — one entry per measurement campaign (C1–C28),
   with its status and headline.
 - `digests/` — the campaign digests: findings with sample sizes,
   variance, confidence flags, scope statements, anomalies, and full
@@ -16,6 +16,11 @@ campaign 11, finding 7 — resolves here:
 - `DIGEST_SPEC.md` — the contract every digest follows.
 - `figures/` — the paper's figures with the scripts that generated
   them; each digest's figure manifest records the exact command.
+- `analysis/` — the scripts that turn stored measurement rows into the
+  numbers in the C25, C26 and C28 digests (exclusion rules, statistics,
+  accounting formulas). They show the computation; they read the raw
+  store on the measurement host, which is not published, so they cannot
+  be run from this pack alone.
 
 Findings carry a Traffic Light status: **Repeatable** (confirmed
 across repetitions with stated confidence), **Early Insight** (single
