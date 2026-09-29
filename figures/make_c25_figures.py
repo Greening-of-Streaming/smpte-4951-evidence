@@ -106,7 +106,7 @@ def main():
                         textcoords="offset points", ha="center",
                         fontsize=7.5, color=TEXT_2)
     ax.axhline(0, color=TEXT_2, lw=0.8, zorder=2)
-    ax.annotate("software decode —\nplays at ~5 fps\n(output 50 fps)",
+    ax.annotate("software decode —\npresents ~5 of\n59.94 frames/s",
                 (1 + width + gap, 1.77), xytext=(18, -32),
                 textcoords="offset points", fontsize=7, color=TEXT_2,
                 ha="left", arrowprops={"arrowstyle": "-", "color": TEXT_2,

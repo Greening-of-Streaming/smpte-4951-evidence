@@ -467,6 +467,225 @@ renumbered them. "PNG commit" is the last commit that touched the PNG.
 - Nothing was run. The 0.2 % (R5e) is therefore agreement between read
   paths only; absolute accuracy at 2–5 W is untested (§4).
 
+### R8 — 2026-09-30 amendment: calibration provenance (host c_idle / c_drift)
+
+Asked by the writing desk after R6. §3.2 says "thirty paired encode runs
+on 17 July 2026 gave c_idle = 2.38% and c_drift = 1.12%" and that the
+drift term "sets a floor of roughly 0.9 W on SE". Both are out of date.
+Desk check on stored data; no rig time.
+
+**R8a — Provenance of 2.46 % / 1.90 %: a routine calibration, same
+protocol as July's.** 🟢 Repeatable (read from the records).
+- Both values come from **step 0 of the in-app overnight benchmark**.
+  The benchmark runs `video.run_variance_calibration`, which writes its
+  result into `settings.json` and appends a line to
+  `results/variance/history.jsonl`.
+  - **July:** benchmark `e121c415`. Calibration 02:01–05:14 on
+    **2026-07-07**, **30 pairs**, idle mean 75.59 W.
+  - **September:** benchmark `591d63c9`. Calibration 01:54–04:03 on
+    **2026-09-05**, **20 pairs**, idle mean 78.36 W.
+  - Both nights used the same benchmark configuration (10 reps ×
+    Meridian/BBB, then LLM, RAG and image compares) and the same
+    kernel (6.17.0-35).
+  - wattlab code: `owl_version` 8087d23 (09-05) against e70f808 (07-07),
+    both dirty.
+- **One calibration pair** = 5 × 1 s idle baseline, H.264 CPU encode of
+  Meridian 4K, 50 s cooldown, 5 × 1 s baseline, HEVC NVENC encode.
+  - **c_idle** is the mean within-window CV.
+  - **c_drift** is the CV of the window means: 40 windows at 20 pairs,
+    60 at 30. Only the summary survives; per-window samples are not
+    persisted.
+- **"17 July" is the git date, not the calibration date.** The 30-pair
+  run is dated **7 July** in `history.jsonl` and in the benchmark
+  record. wattlab `5027e76` (2026-07-17, "settings catch-up: 2026-07
+  recalibration (n=30, cooldown 50s)") committed the values it had
+  written.
+- **The September values were never committed.** `settings.json` is
+  live state; `git diff settings.json` shows 2.38 → 2.46,
+  1.12 → 1.90 and `variance_runs` 30 → 20.
+  - wattlab JOURNAL (Session 76, item 7) records it: "an automatic calibration
+    ran 2026-09-05 04:03 … wrote itself in … left live per Tania".
+  - The last commit touching the tracked values is still `5027e76`.
+- **What triggered it:** the benchmark launched at 01:54 with the
+  variance step enabled. Its pair count was 20 because `variance_runs`
+  had been set to 20 through the /settings slider.
+  - The records don't say who set it or when.
+  - Nothing marks the run as a deliberate recalibration, a warm-room
+    run or a manual edit.
+- **Conditions:**
+  - **GPU:** RTX 5080 on both nights.
+  - **Display:** blanked on both nights. The idle means of 75.6 and
+    78.4 W match the display-blanked ~79 W floor, not the ~101 W
+    active-display level.
+  - **Location:** GoS1 has been in the basement since 06-19.
+  - **Ambient:** not logged (see R8e).
+
+**R8b — What is live, and which coefficients made each stored flag.**
+🟢 for the decode rows (recomputed); 🟡 for the encode rows (assigned
+by date).
+- **One object.** The host encode paths (`video.py:612`,
+  `parity.py:376`) and the rig (`decode_bench/bench.py:828`) all call
+  `confidence()` without settings. It then does `cfg.load()`, reading
+  the live `settings.json` **at the time of each run**.
+  - Today every path uses **2.46 % / 1.90 %**.
+  - A stored flag carries whatever was live when its row ran. Nothing
+    re-flags old rows after a recalibration.
+- Coefficients behind each cited campaign:
+
+  | Rows | Run dates | Coefficients (c_idle / c_drift) | How established |
+  |---|---|---|---|
+  | S53 artifact (06-20 rows) | 2026-06-20 | 2.44 / 1.35 (calibration 06-20 05:07) | by date; parity rows keep no raw samples |
+  | S53 extension rows | 2026-08-28 | 2.38 / 1.12 | by date |
+  | VP9 parity rows | 2026-08-09 | 2.38 / 1.12 | by date |
+  | C17 encode + decode | 2026-08-17/18 | 2.38 / 1.12 | decode: recompute reproduces every stored flag |
+  | R14 (C21) | 2026-08-29/30 | 2.38 / 1.12 | by date |
+  | C11 F9 re-run (Figure 5) | 2026-08-24 | 2.38 / 1.12 | recompute reproduces every stored flag |
+  | C27 (W5 + GTV comparator) | 2026-09-21/22 | **2.46 / 1.90** | recompute reproduces every stored flag |
+  | C25, C26 | 2026-09-27 | **2.46 / 1.90** | recompute reproduces every stored flag |
+
+  - The decode check is C28 R6's recompute of all 2,367 stored rows;
+    it also holds for the subsets here.
+  - The S53 06-18 artifact (not cited) would carry 2.18 / 1.25.
+
+**R8c — The numbers §3.2 needs (current calibration).**
+🟢 arithmetic; 🟡 for the value of c_drift itself (one calibration; see
+R8e for how much it varies).
+- **Current calibration:**
+  - c_idle **2.46 %**, c_drift **1.90 %**;
+  - 20 pairs (40 idle windows of 5 × 1 s);
+  - 2026-09-05;
+  - calibration idle mean **78.4 W, display blanked**.
+- **The host idle level to quote** is the display-blanked one: "about
+  79 W" or "78 W". That is the state of the calibration runs and of
+  every overnight campaign. 101 W applies only with an active desktop
+  display, which no cited measurement used.
+- **SE floor and threshold.** The floor is c_drift × W_base / 100. The
+  ΔW needed for p⁺ ≥ 0.95 at any duration is 1.645 × the floor.
+
+  | Calibration | W_base | SE_drift floor | ΔW for p⁺ ≥ 0.95 at any duration |
+  |---|---|---|---|
+  | September (current) | 78.4 W | **1.49 W** | **2.45 W** |
+  | September (current) | 79 W | 1.50 W | 2.47 W |
+  | July (in the paper) | 75.6 W | 0.85 W | 1.39 W |
+  | July (in the paper) | 79 W | 0.88 W | 1.46 W |
+  | Either, active display | 101 W | 1.13 / 1.92 W | 1.86 / 3.16 W |
+
+  - This is a floor. p⁺ ≥ 0.95 also needs SE_cal or SE_run on top, so
+    the real threshold is somewhat higher.
+  - Every stored encode row clears it by a wide margin (R8d).
+
+**R8d — Does any claim move? No; two Figure 5 markers would change.**
+🟢 Repeatable (the rows were recomputed with wattlab's own
+`confidence()`).
+- **C11 F9 re-run (Figure 5)**, 20 plotted rows re-flagged under the
+  September coefficients:
+  - 18 unchanged.
+  - **Two Fire TV rows go 🟢 → 🟡:**
+    - 20 min, ΔW +0.124 W, p⁺ 0.957 → 0.937 (job `7f195277`);
+    - 59 min, ΔW +0.144 W, p⁺ 0.953 → 0.936 (job `a7dff199`).
+  - Every Pi 5 and GTV marker is unchanged.
+  - **The figure's statement holds and is, if anything, sharper.**
+    "A clear signal is confident within seconds" rests on the Pi 5 and
+    GTV rows. "A margin near 0.1 W flickers at every length" is exactly
+    what the two Fire TV markers do, and under September's values they
+    flicker amber at 20 and 59 min.
+  - The committed figure plots the stored (July-era) flags. If it is
+    redrawn under current coefficients, those two filled markers become
+    open.
+- **C25–C27:** these rows were **flagged with the current
+  coefficients** in the first place.
+  - Recomputing reproduces every stored flag, so **no flag changes
+    under the host's current values**. C28 R6 found none under
+    device-own values either.
+  - Under the older July values one row would be 🟢 rather than 🟡:
+    C25 Bbox HEVC, +0.200 W, job `42ab84d2`, p⁺ 0.979 vs 0.916.
+- **C17 decode (145 rows):** 5 flags would drop under September's
+  values.
+  - Three Bbox 🟡 → 🔴 (+0.095 to +0.113 W).
+  - One Bbox 🟢 → 🟡 (+0.215 W).
+  - One C2 🟢 → 🟡 (+1.427 W on a ~50 W panel).
+  - None is in C17 F3's GTV/Fire TV hardware set, so R2 is unaffected.
+- **Encode rows** (S53, VP9, C17 parity, R14; 370 rows): the September
+  drift term, added in full to each stored SE, leaves the lowest p⁺ at
+  **0.996** (the hot-baseline S53 Kranjska AV1-CPU row, ΔW 38.3 W). No
+  encode flag can change.
+
+**R8e — Ambient: 1.90 % is not a warm-room figure on any available
+evidence; it is calibration-to-calibration spread.** 🟡 Early Insight
+(no ambient sensor; proxies only).
+- **No room temperature is logged.** Two proxies from the same nights,
+  taken from the 20 video jobs each benchmark ran right after its
+  calibration:
+  - **Idle temperatures match:** CPU Tctl median 66.0 °C (July) vs
+    65.8 °C (September), GPU 51 vs 50 °C.
+  - **An independent estimate reverses the order.** Clean baselines
+    only (under floor + 4 W; 96 and 92 windows) give:
+
+    | Night | c_idle | c_drift |
+    |---|---|---|
+    | July | 2.90 % | 1.75 % |
+    | September | 2.49 % | 1.36 % |
+
+    The September night was no noisier than July's on this measure; if
+    anything it was quieter.
+- **The spread across calibrations.** Six calibrations on the current
+  host (RTX 5080, from 2026-05-30):
+
+  | Date | c_drift | Pairs |
+  |---|---|---|
+  | 2026-05-30 | 1.01 % | 12 |
+  | 2026-06-10 | 1.03 % | 20 |
+  | 2026-06-11 | 1.25 % | 20 |
+  | 2026-06-20 | 1.35 % | 20 |
+  | 2026-07-07 | 1.12 % | 30 |
+  | 2026-09-05 | 1.90 % | 20 |
+
+  - c_idle runs 1.84–2.46 % over the same six.
+  - A CV estimated from 40 autocorrelated window means is a noisy
+    statistic. 1.90 % is the top of that range, not an outlier from
+    another regime.
+- **The warm-room example needs correcting.**
+  - "3.92 % against 1.10 % clean" is the 2026-05-29 03:28 calibration.
+    It was taken on the **AMD RX 7800 XT host** (idle mean 59 W), the
+    night after the heat-wave run that carries the record's only
+    explicit ambient note (2026-05-28: 4.40 %, "Paris heat wave;
+    server room ~+10 % warmer").
+  - wattlab JOURNAL also calls the 05-29 run "the warm-ambient 3.07 %
+    recalibration" (3.07 % is its `variance_pct`).
+  - **No calibration reads 1.10 %.** The nearest are 1.01 % (05-30,
+    RTX era) and 1.12 % (07-07).
+  - The pair therefore spans a GPU swap as well as a room-temperature
+    change. It illustrates ambient sensitivity, but not like-for-like.
+  - Like-for-like would be "4.40 % in a May 2026 heat wave against
+    1.0–1.4 % under normal ambient". The hardware differs, and it
+    should be labelled.
+- **Which value the paper should quote as the calibration:** the
+  **current** one, **2.46 % / 1.90 % (20 pairs, 5 September 2026)**.
+  - It is live, and it produced the flags on C25–C27, the rows the
+    paper's central claims rest on.
+  - Nothing marks it as ambient-inflated.
+  - The July value remains true of the rows flagged before 09-05 (C11
+    F9, C17, R14), so it belongs in the text as the earlier
+    calibration, not as the current one.
+- **Sentence the data supports (replaces both quoted §3.2 sentences):**
+  "The host is calibrated by paired encode runs during an overnight
+  benchmark; the current calibration (20 pairs, 5 September 2026,
+  idle about 78 W with the display blanked) gives c_idle = 2.46% and
+  c_drift = 1.90%. The earlier one (30 pairs, 7 July) gave 2.38% and
+  1.12%, and flagged the rows measured before September; across six
+  calibrations since June, c_drift has ranged from 1.0% to 1.9%. The
+  drift term does not shrink with longer runs: on the host it sets a
+  floor of about 1.5 W on SE, so a run must draw about 2.5 W above idle
+  before it can be confident at any duration."
+  - If §3.2 must stay short, the minimum fix is: "c_idle = 2.46% and
+    c_drift = 1.90% (20 paired encode runs, 5 September 2026) … sets a
+    floor of roughly 1.5 W on SE".
+- **Side note for wattlab (not the paper):** the comment in
+  `video.py` (`run_variance_calibration`) still calls
+  `variance_idle_drift_pct` "diagnostic, not consumed by the confidence
+  flag". It has been consumed since CR-028 phase 2 (`confidence.py`
+  line 118). The comment is stale; the code is right.
+
 ## 4. Anomalies and open questions
 
 **What the draft should change (the data does not support the current
@@ -551,8 +770,11 @@ wording):**
     same text at 300 dpi, or figures/README should state the SVG as
     the source. figures/README's 09-28 heading still calls it
     "Figure 6".
-17. **Evidence repo sync (item 6): prepared, NOT pushed**; it waits
-    for Ben's confirmation.
+17. **Evidence repo sync (item 6): pushed 2026-09-30 after Ben's
+    confirmation** (public `66c82f8`). **R8 (this amendment) is NOT in
+    the pack:** it needs this digest, RESULTS_INDEX.md and
+    `analysis/c28_r8_calibration.py` re-copied, and a push only on Ben's
+    confirmation. As first prepared:
     - Scratch clone commit on top of public `2067f82`; 25 files,
       +2164/−31. It carries C25–C27, the C24 and C11 F1 amendments,
       RESULTS_INDEX, figures/README, all seven paper figures, and this
@@ -615,4 +837,14 @@ apply and re-render, not done here.
   - `digests/2026-09-review-checks-lens.csv`: R1, one row per encoder
     cell, with n, W_base source, ΔW, marginal, attributional and the
     multiplier.
-- **Analysis date:** 2026-09-30.
+- **R8 (amendment):** `python3 analysis/c28_r8_calibration.py`. It prints
+  the calibration history, the two nights re-estimated from their
+  benchmark video jobs, the decode re-flags (July vs September), the
+  encode-row bound and the §3.2 numbers.
+  - Records: `results/variance/history.jsonl`;
+    `results/benchmark/2026-07-07_e121c415.json`, `…/2026-09-05_591d63c9.json`;
+    `git -C ~/wattlab diff settings.json`; `git -C ~/wattlab show 5027e76 --stat`.
+  - Code: `wattlab_service/video.py` `run_variance_calibration`,
+    `wattlab_service/confidence.py` (`cfg.load()` when no settings are
+    passed).
+- **Analysis date:** 2026-09-30 (R8 the same day, after `c994579`).

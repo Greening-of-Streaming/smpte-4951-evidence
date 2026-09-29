@@ -671,8 +671,32 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 - **Paper role:** decides the wording of the abstract's codec sentence
   and §3's lens sentence. The full list of draft changes is in digest
   §4 items 1–9.
-  - Evidence-repo sync (C25–C28) is prepared and unpushed, pending
-    Ben's confirmation.
+  - Evidence-repo sync (C25–C28) pushed 2026-09-30 (public
+    `66c82f8`). The R8 amendment below is not in the pack yet.
+- **⚠ 2026-09-30 amendment (R8, calibration provenance):**
+  - **The current host calibration is 2.46 % / 1.90 %** (20 paired
+    encode runs, **2026-09-05**, idle 78.4 W display blanked). It is the
+    overnight benchmark's routine variance step, the same protocol as
+    July's, and it was left live, never committed.
+  - The paper's "17 July, 30 runs, 2.38 % / 1.12 %" is the 7 July
+    calibration, committed on 07-17 (wattlab `5027e76`).
+  - Host and rig read the same live `settings.json` at run time:
+    - C25–C27 were flagged with the September values;
+    - C11 F9, C17, R14 and VP9 with the July values;
+    - the S53 06-20 rows with 2.44 / 1.35.
+  - **SE floor ≈1.5 W, so ΔW ≈2.5 W** for p⁺ ≥ 0.95 at any duration
+    (not 0.9 W).
+  - **No claim moves.** Two Figure 5 Fire TV markers (20/59 min, about
+    +0.13 W) go 🟢 → 🟡, which is the "flickers" statement; no C25–C27
+    flag changes; encode rows keep p⁺ ≥ 0.996.
+  - **Not ambient-inflated** on the available proxies (same idle
+    temperatures; the September night reads quieter on an independent
+    estimate). c_drift has spanned 1.0–1.9 % across six RTX-era
+    calibrations.
+  - The warm-room "3.92 % vs 1.10 %" pair spans the GPU swap (AMD
+    host), and no calibration reads 1.10 %.
+  - 🟢 R8a/b/d, 🟡 R8c's c_drift value and R8e. Replacement §3.2
+    sentence in the digest.
 
 ## Candidate campaigns (pending RUN_QUEUE execution)
 
