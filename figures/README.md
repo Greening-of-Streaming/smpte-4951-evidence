@@ -131,7 +131,27 @@ Re-rendered with the render command above (soffice, pdftoppm -r 600).
     python3 figures/deck/make_deck_figures.py
 
 `deck_c8_two_panels.png` is the top two panels of `fig_c8_dual_capture.png`
-(PIL crop, rows 6.8%–65.5% of the height; see talks/mts2026/build_deck.py).
+(PIL crop, rows 6.8%–65.5% of the height, truncated to whole pixels; used by
+talks/mts2026/build_deck.py, slide 7). Scripted 2026-09-30; the script
+reproduces the earlier hand crop of the 160-dpi figure pixel for pixel. Now
+6600×3346 from the 600-dpi Figure 3:
+
+    python3 figures/deck/make_c8_two_panels.py
+
+## fig_c8_dual_capture.png / .svg — Figure 3: R2 dual capture (C8), 600 dpi (2026-09-30)
+
+Rendered on GoS1 from the raw store: bench per-run JSONs, the LEM CSV and
+the REM export under `/srv/data/owl/r2-dual-capture/`. Jobs: `7d82cb7d`
+(GTV, Pi 400) and C2 `75d7e183`.
+
+    /srv/data/owl/figures-venv/bin/python figures/make_c8_dual_capture_figure.py 75d7e183
+
+`--dpi` defaults to 600 (it was a hard-coded 160 until 2026-09-30, i.e.
+1760×1520 px). The PNG is now 6600×5700 px: 11 × 9.5 in at 600 dpi,
+about 1,015 dpi as placed at 6.5 in. The script also writes an SVG, so
+later edits need no raw store. Same data and text as before: `--dpi 160`
+reproduces the previously committed PNG byte for byte, and all 46 SVG text
+labels match.
 
 ## 2026-09-28 text edits to fig_c11_f9_duration_v2 (Figure 6), from Dom's review
 

@@ -1,22 +1,29 @@
 #!/usr/bin/env python3
 """fig_c8_dual_capture.png — the REM 10-min energy-signature sequence seen by
 the bench (1 s, mW) and by REM's two paths on the same plug, per arm.
-Run on GoS1: /srv/data/owl/figures-venv/bin/python figures/make_c8_dual_capture_figure.py
+Run on GoS1: /srv/data/owl/figures-venv/bin/python figures/make_c8_dual_capture_figure.py 75d7e183
+  [--dpi 600] [--out DIR]   (positional arg = the C2 signature job; default 75d7e183)
 Inputs (raw, stay on GoS1): decode-bench per-run JSONs, LEM CSV, gos_rem export
-(/srv/data/owl/r2-dual-capture/). Output: figures/fig_c8_dual_capture.png
+(/srv/data/owl/r2-dual-capture/). Output: figures/fig_c8_dual_capture.{png,svg}
+(PNG at --dpi, default 600 since 2026-09-30; was 160; the SVG needs no raw store to edit).
 """
-import glob, json, sys
+import argparse, glob, json, os
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 D = '/srv/data/owl/r2-dual-capture/'
 BENCH = '/srv/data/owl/decode-bench/results/'
-OUT = '/home/gos/dev/smpte-4951/figures/fig_c8_dual_capture.png'
+ap = argparse.ArgumentParser()
+ap.add_argument('c2_job', nargs='?', default='75d7e183')
+ap.add_argument('--dpi', type=int, default=600)
+ap.add_argument('--out', default=os.path.dirname(os.path.abspath(__file__)))
+args = ap.parse_args()
+OUT = os.path.join(args.out, 'fig_c8_dual_capture')
 # job ids: (rep-2 headless signature on GTV+Pi 400, first C2 signature job)
 ARMS = [('gtv', '7d82cb7d', 'Lab-D', 'Google TV Streamer, Ethernet, headless decode (LAN path: LEM 10 s → REM field API)'),
         ('pi400', '7d82cb7d', 'Lab-B', 'Raspberry Pi 400, software decode (cloud path: TP-Link cloud → REM, 10 s, integer W)'),
-        ('c2', sys.argv[1] if len(sys.argv) > 1 else '75d7e183', 'Lab-E', 'LG C2 OLED, native playback, panel metered (LAN path: LEM 10 s → REM)')]
+        ('c2', args.c2_job, 'Lab-E', 'LG C2 OLED, native playback, panel metered (LAN path: LEM 10 s → REM)')]
 SEG = [(0, 90, 'timer/black'), (90, 120, 'white'), (120, 151, 'black'), (151, 540, 'Meridian content'), (540, 599, 'black')]
 SKIP = {'gtv': 8, 'pi400': 8, 'c2': 5}
 
@@ -53,5 +60,6 @@ for ax, (dev, job, alias, title) in zip(axes, ARMS):
 axes[-1].set_xlabel('clip time (s) — REM 10-min signature: timer/black · white · black · content · black tail')
 fig.suptitle('R2 dual capture (C8): one playback, two readers per plug — 2026-08-25, decode rig protocol v3, keep_awake pinned', fontsize=11)
 fig.tight_layout(rect=(0, 0, 1, 0.97))
-fig.savefig(OUT, dpi=160)
-print('wrote', OUT)
+fig.savefig(OUT + '.png', dpi=args.dpi)
+fig.savefig(OUT + '.svg')
+print('wrote', OUT + '.png', f'({args.dpi} dpi) and .svg')
