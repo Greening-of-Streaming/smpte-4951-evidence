@@ -324,3 +324,60 @@ side is out of scope (Pouli et al. #4941).
 - **Summary CSV:** `digests/2026-09-c25-decode-rediag.csv` (one row per
   arm × device × codec; summary statistics only).
 - **Analysis date:** 2026-09-27.
+
+## Amendment 2026-09-30 — delivery path
+
+Desk check on the stored runs of batch `20260927d1a6`; no rig time.
+
+- **Every C25 row streamed the clip over HTTP from the GoS1 origin; none
+  played a local file.** 🟢
+  - All 24 rows carry `url_or_cmd` = the origin on GoS1 (port 8123),
+    `/meridian_{h264_60min,h265_20min,av1_20min}.mp4`.
+  - The player is Just Player, launched by a VIEW intent on that URL.
+- **Interfaces.** 🟢
+  - **Google TV: Wi-Fi.** All 12 rows address its wlan0 reservation,
+    not its eth0 one (`decode_bench/README.md` address table). The rig has
+    had it on Wi-Fi since 2026-09-03 (`rig.py`).
+  - **Bbox: Ethernet.** All 12 rows address its eth0 reservation.
+- **Baselines had the radio associated and idle.** 🟢
+  - The Google TV has no cable on Wi-Fi, and it drops Wi-Fi only when a
+    cable goes in (`rig.py` note). Each 20 s baseline was therefore taken
+    associated, with no stream.
+  - C18 F1 found an idle radio costs nothing measurable. So each ΔW
+    carries only the *active*-radio term.
+- **Estimated radio share of the Google TV ΔW.** 🟡: cross-campaign,
+  different content (C18 used BBB), and the size depends on the link.
+  - C18's Google TV Wi-Fi-minus-Ethernet term, averaged over burst and
+    paced delivery at n=3 per cell:
+    - +0.17 W at 1.5 Mb/s;
+    - +0.18 W at 8 Mb/s;
+    - +0.28 W at 20 Mb/s.
+  - Interpolated to C25's clip bitrates (H.264 4.5, HEVC 3.5, AV1
+    2.8 Mb/s), that gives **≈ +0.17 W** on every codec.
+  - The Google TV's +0.47 / +0.51 / +0.43 W (H.264 / HEVC / AV1) would
+    then be **≈ +0.30 / +0.34 / +0.26 W** on Ethernet.
+  - "Hardware decode costs a few tenths of a watt" **still holds** for
+    the Google TV: 0.26–0.34 W on the Ethernet-equivalent basis, and
+    0.43–0.51 W as measured.
+  - The Bbox figures (+0.33 / +0.25 W) carry no radio term.
+- **Codec-to-codec differences (C28 R2) are not affected.** 🟢
+  - All three codecs used the same path.
+  - C18's radio term changes by less than 0.01 W between 2.8 and
+    4.5 Mb/s (+0.17 → +0.18 W from 1.5 to 8 Mb/s).
+- **Sentence §4.2 needs:** "The Google TV rows streamed over Wi-Fi,
+  which on this box adds about 0.2 W at these bitrates (Section 4.3), so
+  its absolute figures include a radio term of that size; the codec
+  differences do not. The Bbox rows streamed over Ethernet."
+- **Figure 7 caption** needs a transport note, e.g. "clips streamed
+  over HTTP from a local origin; Google TV on Wi-Fi, Bbox on Ethernet".
+  This digest's §1 now carries it via this amendment.
+- **Commands:**
+  - Rows and the address each one used:
+
+        python3 -c "import json,glob;[print(d['job_id'],r['device'],r['url_or_cmd'],v['rows'][0]['device']['serial']) for f in glob.glob('/srv/data/owl/results/decode/2026-09-27_*.json') for d in [json.load(open(f))] if d.get('batch_id')=='20260927d1a6' for r in d['runs'] for k,v in d['devices'].items() if k==r['device']]"
+
+  - Clip bitrates:
+    `ffprobe -v error -show_entries format=bit_rate -of csv=p=0 /srv/data/owl/stb-decode-2026-07/streams/meridian_{h264_60min,h265_20min,av1_20min}.mp4`
+    (4.50 / 3.51 / 2.81 Mb/s).
+  - C18 cells: `/srv/data/owl/campaign_2026-08-18_netpath/netpath_cells.json`,
+    keys `gtv|{eth,wifi}|{1500,8000,20000}|{burst,paced}`.

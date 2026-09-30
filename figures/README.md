@@ -153,3 +153,15 @@ The never-produced Figure 2 placeholder was dropped from §2.2 (Ben, 2026-09-28)
 Figures 3–8 became 2–7: sequence 2, dual capture 3, OWL architecture 4,
 window length 5, loop 6, codec matrix 7. Headings above updated where they
 named a number.
+
+## 2026-09-30 — talk deck master moved to Drive
+
+Ben edited the MTS 2026 deck in Google Slides (Affiliate Members slide,
+backup slide 26, retitled slides), so the Drive copy
+`SMPTE-4951/SMPTE-4951_MTS2026.pptx` is now the master and
+`talks/mts2026/build_deck.py` is historical: rebuilding would drop his
+edits. Changes are applied to the Drive master by scripts such as
+`talks/mts2026/edit_deck_2026-09-30.py`. Added: `deck/make_qr.py`
+(`qr_github.png`, `qr_website.png`: segno, error correction H, GS badge in
+the centre, both verified to decode at 150 px). `deck_rungs.png`: the
+1080p60 label now reads "~5 of 60 fps" (content rate), matching the paper.

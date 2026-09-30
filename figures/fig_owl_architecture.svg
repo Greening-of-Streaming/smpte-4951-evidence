@@ -147,8 +147,8 @@
       <rect x="22" y="52" width="128" height="34" rx="5" fill="#ffffff" stroke="#aeb3c4" stroke-width="1.5"/>
       <rect x="16" y="58" width="128" height="34" rx="5" fill="#ffffff" stroke="#1f2236" stroke-width="2"/>
       <text x="80" y="80" font-size="12" font-weight="bold" fill="#1f2236">other decode devices</text>
-      <text x="80" y="108" fill="#5b5e70">W5, Xiaomi Gen 3, others</text>
-      <text x="80" y="123" fill="#5b5e70">added since · one meter each</text>
+      <text x="80" y="108" fill="#5b5e70">Xiaomi Gen 2 and Gen 3,</text>
+      <text x="80" y="123" fill="#5b5e70">others · one meter each</text>
     </g>
     <!-- row 2 -->
     <g transform="translate(760,365)">

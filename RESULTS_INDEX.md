@@ -393,7 +393,15 @@ The corrections are part of the record; nothing has been deleted.
   duty cycle plus an origin defect.
 - **Current result:**
   - No measurable pacing effect on the tested boxes (n=3).
-  - Wi-Fi adds a device-dependent term (+0.1 to +1.0 W).
+  - Wi-Fi adds about 0.2 W while playing on both STBs: GTV +0.21 W;
+    Bbox **+0.16 to +0.25 W** (2026-09-14/15 same-sink re-measurement;
+    August absolute +0.48 W). It adds nothing at idle or with the file
+    on the box.
+  - **Superseded 2026-09-30:** the Bbox's "+0.98 W". It was a
+    difference of ΔWs whose baselines sat on different screens (menu
+    vs live home, 0.50 W apart). F2's "+0.50 W (+75 %)" average and
+    the 12× end of "2.5–12×" rested on it; the ratio is now roughly
+    2–6×.
   - Ethernet ≈ local file is shown on **one box** (GTV, n=3: +0.019 W,
     95 % CI [−0.034, +0.073]; C28 R5a), not across devices.
 - **Track:** OWL decode rig protocol v3 (Ethernet vs Wi-Fi vs local ×
@@ -688,6 +696,15 @@ The corrections are part of the record; nothing has been deleted.
   **Not every negative is a playback failure:** C17 Bbox Kranjska rows
   (PLAYING recorded) stay unexplained, and the F9 Fire TV negatives are
   contaminated baselines.
+- **⚠ 2026-09-30 amendment (delivery path):**
+  - Every C25 row streamed over HTTP from the GoS1 origin; the Google TV
+    was on **Wi-Fi**, the Bbox on Ethernet.
+  - The Google TV's +0.43–0.51 W therefore includes ≈ +0.17 W of active
+    radio (C18, interpolated to 2.8–4.5 Mb/s; 🟡). That makes it
+    ≈ 0.26–0.34 W on an Ethernet basis, still a few tenths of a watt.
+  - Codec differences are unaffected (same path; < 0.01 W).
+  - §4.2 and the Figure 7 caption need a transport note (digest
+    amendment).
 - **Digest:** `digests/2026-09-c25-decode-rediag.md` (+ `.csv`)
 - **Figure:** `figures/fig_c25_codec_matrix` replaces Figure 8
   (`fig_c11_f7_f11_codec_matrix`, retired, in git history only).
@@ -819,6 +836,17 @@ The corrections are part of the record; nothing has been deleted.
     host), and no calibration reads 1.10 %.
   - 🟢 R8a/b/d, 🟡 R8c's c_drift value and R8e. Replacement §3.2
     sentence in the digest.
+- **⚠ 2026-09-30 amendment (R9, Xiaomi rig status):**
+  - **Both Xiaomis are on the rig**; the W5 is parked (wattlab `3f8580f`).
+  - **Silicon, read live:** Gen 3 = **Amlogic S905X5M** (`ro.soc.model`);
+    Gen 2 = `sc2` (S905X4 by codename, `ro.soc.*` empty).
+  - **Hardware decode:** both allocate hardware H.264/HEVC/VP9/**AV1**
+    decoders on this rig (e.g. batch `ca78c5c05464`). Hardware AV1 is
+    therefore not MediaTek-only here, but neither box's AV1 has an fps
+    check, and neither is in Section 4.
+  - **Rig count:** ten devices today, including the LG. Table 1 would
+    have 11 rows with the parked W5. Figure 4's "W5, Xiaomi Gen 3"
+    slot is out of date.
 
 ## Candidate campaigns (pending RUN_QUEUE execution)
 

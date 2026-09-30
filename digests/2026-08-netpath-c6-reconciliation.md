@@ -149,3 +149,90 @@ inside its idle drift (🔴/🟡 per row) — only the Ethernet↔Wi-Fi
 - C6 side of the audit: `digests/2026-07-stb-decode.md` §3–4 and GoS1
   `~/wattlab/docs/stb_decode_energy_2026-07.md`.
 - Desk pass + digest: 2026-08-24 on GoS1 (no new measurement).
+
+## Amendment 2026-09-30 — Bbox Wi-Fi premium re-measured: +0.98 W was a baseline-state artefact
+
+Desk check of stored runs; no rig time. Ben remembered a later Bbox
+re-measurement near +0.5 W. It exists: a Bbox-only follow-up to CR-074 on
+**2026-09-14/15** (`/srv/data/owl/campaign_2026-09-14_bbox_wifi/`,
+`OVERNIGHT_REPORT.md`, `README.md`). It was never digested until now.
+
+**What the records show:**
+
+| Run | Dates | Design | n | Wi-Fi − Ethernet, W while playing |
+|---|---|---|---|---|
+| C18 (this digest) | 2026-08-18/19 | BBB 1.5/8/20 Mb/s × burst/paced, 600 s; Ethernet day vs Wi-Fi day | 18 / 18 rows | **+0.48 W absolute** (6.517 ± 0.171 vs 6.037 ± 0.161 W); **+0.98 W on ΔW** |
+| A-B-A, same evening | 2026-09-14 21:46–22:50 | BBB 8 Mb/s, 300 s, cable pulled and re-plugged | 3 / 3 | **+0.18 W** |
+| Ladder, night Wi-Fi vs day Ethernet | batches `20260914bb0c` (Wi-Fi) and `20260915bb0e` (Ethernet), same clips, same sink (panel HDMI_2) | BBB, Meridian, football × H.264/HEVC × 3 rungs, 150 s | 2–3 per cell, 6 cells per rung | **+0.16 ± 0.02** (1080p 10 Mb/s), **+0.21 ± 0.02** (2160p 20), **+0.25 ± 0.03** (2160p 35) |
+
+- **Local-file controls** (the same clip from the box's storage, no
+  traffic) put Wi-Fi-associated and Ethernet-only **equal**: 6.58 vs
+  6.69, 7.94 vs 7.93, 8.03 vs 8.05 W.
+- **Idle** (menu, no player): the two interfaces are equal within
+  0.03 W.
+
+**Why +0.98 W differs (🟢 for the arithmetic, 🟡 for the screen-state
+attribution):**
+- C18's +0.98 W compares **ΔW over idle**. The two interfaces' idle
+  baselines differed by 0.50 W: **5.36 W on Wi-Fi vs 5.86 W on
+  Ethernet** (n=18 each).
+- In absolute watts while playing, the gap was **+0.48 W**, and
+  0.48 + 0.50 = 0.98.
+- The September runs show why the baselines differed. The same box
+  idles at ~5.4 W on the Settings menu and ~5.8–6.0 W on the live home
+  screen, whose preview decodes video behind the overlay (+0.4–0.6 W on
+  either interface).
+  - August's Wi-Fi baselines match the menu level; its Ethernet
+    baselines match the live home screen.
+  - The August Wi-Fi rows therefore started from a cheaper screen,
+    inflating their ΔW. The connection itself costs nothing at idle.
+- **What remains is a real receive-path term.** It appears only when
+  streaming over Wi-Fi: +0.16–0.25 W at 10–35 Mb/s, a large fixed part
+  with a mild bitrate slope.
+- August's absolute +0.48 W (different day, different state history)
+  is the upper data point.
+- The records do not separate "a dearer Wi-Fi receive path" from "a
+  box that powers its radio down more fully when Wi-Fi is off" (report
+  §6).
+- Link: Wi-Fi 6 at 5.5–5.6 GHz, RSSI −55 to −59 dBm, PHY 680–1134 Mb/s.
+  The Google Cast receiver holds a high-performance Wi-Fi lock, but
+  the framework reports it unused (`high_perf_active_time_ms: 0`), so
+  it is not the mechanism.
+
+**Status:**
+- **+0.98 W is superseded (withdrawn as a playback cost).** 🟢
+- **Replacement: the Bbox's Wi-Fi term while playing is +0.16 to
+  +0.25 W** at 10–35 Mb/s. 🟢 within this box: two independent designs
+  agree (A-B-A +0.18 W, n=3/3; ladder, 18 cells within ±0.03 W per
+  rung).
+- **August's absolute +0.48 W is the upper bound of the range on
+  record.** 🟡 (different day and state history).
+- Quote **"about 0.2 to 0.5 W"**.
+- **Knock-ons:**
+  - F2's cross-device "+0.50 W (+75 %)" average includes the Bbox
+    artefact, so **do not quote it**.
+  - The "connection method 2.5–12× the codec spread" upper end (12×)
+    rested on +0.98 W. With the Bbox at 0.2–0.5 W, the ratio against
+    the ≤0.08 W spread is roughly **2–6×**.
+  - The Google TV's +0.21 W (n=3) is unaffected: its two interfaces
+    shared a baseline state.
+
+**§4.3 sentence the data supports:** "Wi-Fi added about 0.2 W while
+playing on both the Google TV (+0.21 W) and the operator box (+0.16 to
++0.25 W at 10–35 Mb/s, same-sink re-measurement), and nothing at idle
+or with the file on the box; an earlier +0.98 W for the operator box
+compared baselines taken on different screens."
+
+**Commands:**
+- August absolute watts by interface (the Bbox's eth0 and wlan0 addresses, per `decode_bench/README.md`):
+
+      python3 -c "import json,glob,statistics as st,collections;c=collections.defaultdict(list)
+      [c[d['devices']['bbox']['rows'][0]['device']['serial']].append((r['w_base'],r['w_task'])) for f in glob.glob('/srv/data/owl/results/decode/2026-08-*.json') for d in [json.load(open(f))] if d['template'].startswith('net_') for r in d['runs'] if r['device']=='bbox']
+      [print(k,len(v),st.mean(x[0] for x in v),st.mean(x[1] for x in v)) for k,v in c.items()]"
+
+- September tables: `/srv/data/owl/campaign_2026-09-14_bbox_wifi/eth_vs_wifi_tables.md`
+  and `night_tables.md`, produced by `eth_vs_wifi.py` and
+  `night_report.py` in that folder.
+- Timeline and A-B-A rows: that folder's `README.md`. Its
+  `note_for_oualid_*` drafts carry a device serial and are not for
+  publication.

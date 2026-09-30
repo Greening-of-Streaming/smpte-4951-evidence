@@ -686,6 +686,70 @@ evidence; it is calibration-to-calibration spread.** 🟡 Early Insight
   flag". It has been consumed since CR-028 phase 2 (`confidence.py`
   line 118). The comment is stale; the code is right.
 
+### R9 — 2026-09-30 amendment: Xiaomi rig status
+
+Desk check from `rig.py`, the wattlab JOURNAL and stored decode rows,
+plus a read-only `getprop` on each box (powered on, read, powered off;
+no playback, no measurement). The same day Ben parked the W5 and put the
+Gen 2 back on its old Lab-F3 plug (wattlab `3f8580f`).
+
+| Field | Xiaomi TV Box S **Gen 2** | Xiaomi TV Box S **Gen 3** |
+|---|---|---|
+| **1. Status** | **Active since 2026-09-30** (wattlab `3f8580f`), on Lab-F3 with an HDMI dummy plug. History: onboarded 08-29, parked the same day (PSU fault, not DOA), revived 09-02, off the rig 09-21 → 09-30 (removed in `fac9405`). Lab-F3 was among the 11 plugs read in R5d, but it was then metering the W5. 🟢 | **Active since 2026-09-02** (JOURNAL S73, `rig.py` `xiaomi3`), on Lab-F4 with an HDMI dummy plug. Lab-F4 is among the 11 plugs read in R5d (fw 1.3.1). 🟢 |
+| **2. Silicon, as read** | `ro.soc.*` **empty**, `ro.hardware=amlogic`, `ro.board.platform=sc2`, 4× Cortex-A55 (CPU part `0xd05`), `MiTV-AFKR0` "jaws", Android 11. "S905X4" is Amlogic's `sc2` codename mapping, not a self-report. 🟡 | `ro.soc.manufacturer=Amlogic`, **`ro.soc.model=AMLS905X5M`**, `ro.board.platform=s7d`, 4× Cortex-A55, `MiTV-AFMU0` "twilight", Android 14. It is the **S905X5M**, not the "S905X5" in the inventory. 🟢 |
+| **3. HW decode, confirmed on this rig** | Allocation of legacy-OMX hardware decoders, logged per run, for **H.264, HEVC, VP9 and AV1**: `OMX.amlogic.{avc,hevc,vp9,av1}.decoder.awesome2`. Batch `ca78c5c05464` (2026-09-04, all four codecs, n=3 each). AV1 also `9b738de1ca2a`, `aaaa050901`, `fadec00901`. AV1 kernel path `ammvdec_av1_v4l` (JOURNAL S73). 🟢 | Codec2 hardware decoder allocation for **H.264, HEVC, VP9 and AV1**: `c2.amlogic.{avc,hevc,vp9,av1}.decoder`. Batches `85c22b801df6` (2026-09-03, all four codecs, n=3) and `ca78c5c05464`. AV1 also `aaaa050901` (n=5), `fadec00901` (n=6) and `20260928a5e0`. 🟢 |
+| **3. Per specification only** | none (all four allocation-confirmed) | none (all four allocation-confirmed) |
+| **3. Not confirmed** | presented frame rate for any codec (no SurfaceFlinger probe on this box) | full-rate presentation of **AV1 and VP9**. The only fps probe (C28 R3, e2e pilot `20260927e2e0`) covered the H.264/HEVC arms: 62.5 on a 60 Hz output |
+| **4. Control, network** | ADB over the network; **Wi-Fi only** (`wlan0`; the box has no Ethernet port) | ADB over the network (needs both "Network debugging" and "MiTV ADB debugging"); **Wi-Fi** (`wlan0`; a USB-Ethernet adapter never got DHCP) |
+| **5. On record** | 2026-09-02 → 09-16: S73 two-axis STB batches (`a9f06c58ab09`, `85c22b801df6`), bitrate ladder `bae281b52f90`, football tier (`ca78c5c05464`, `9b738de1ca2a`), AV1 `fadec00901`, sink-regime rows. **No Section 4 claim draws on it.** It appears only in C28 R6's device-coefficient table. | 2026-09-02 → 09-27: the same batches plus the e2e pilot `20260927e2e0` and `20260928a5e0`. **No Section 4 claim draws on it.** It appears in C28 R3 (as a 60 Hz comparator) and in R6. |
+
+**Consequence for §3.4 and §6 (🟢 for allocation, 🟡 for playback).**
+- On this rig, hardware AV1 decode is **not MediaTek-only**. Two Amlogic
+  generations (S905X4/sc2 legacy OMX; S905X5M/s7d Codec2) allocate
+  hardware AV1 decoders, logged on 20+ runs across 4 batches.
+- Neither box's AV1 has had its presented frame rate measured. Nor is
+  Amlogic AV1 in any Section 4 finding.
+- So the accurate statement is: "hardware AV1 decode is logged on
+  MediaTek and Amlogic boxes, but the case study's hardware-AV1 cost
+  rests on MediaTek (the Google TV) alone."
+- A second hardware-AV1 vendor *in the evidence* needs an AV1 row with
+  an in-window fps check on either Xiaomi. §6 lists that as a priority.
+
+**6. Suggested Table 1 rows** (paper format):
+
+| Device | Silicon | Hardware decode | Control | Role in case study |
+|---|---|---|---|---|
+| Xiaomi TV Box S (Gen 2) | Amlogic S905X4 | H.264, HEVC, VP9, AV1 | ADB, Wi-Fi | on the rig; not in the case study |
+| Xiaomi TV Box S (Gen 3) | Amlogic S905X5M | H.264, HEVC, VP9, AV1 | ADB, Wi-Fi | on the rig; not in the case study |
+
+- The W5 row stays: C27 is cited. Its role gains "parked 2026-09-30".
+
+**7. Rig count (🟢):**
+- **On the rig today: ten devices including the LG OLED.** They are the
+  Pi 5, Pi 400, Google TV, Fire TV, Bbox, Apple TV, Xiaomi Gen 2,
+  Xiaomi Gen 3, Roku and LG C2 (the `/decode/status.json` roster after
+  `3f8580f`).
+- "A ten-device client decode rig" is still correct.
+- With both Xiaomis, Table 1 would list **eleven** devices, because the
+  parked W5 stays for C27. The caption would then need "eleven devices
+  have been on the rig; ten are on it today". Replace "the tenth,
+  added since".
+- **Figure 4's generic slot** ("W5, Xiaomi Gen 3, others") is **no longer
+  accurate**. Today it would read "Xiaomi Gen 2, Xiaomi Gen 3", since
+  the W5 is parked.
+
+**Also noticed (🟡, not asked):** Table 1 gives the Google TV as
+"Ethernet". It moved to Wi-Fi on 2026-09-03 (`rig.py`; wattlab test
+comment), which covers C25 (09-27). Check against the C25 digest before
+changing it.
+
+**Commands:**
+- `adb -s <box> shell getprop ro.soc.model ro.board.platform`, run on
+  2026-09-30 via `/decode/device/{xiaomi,xiaomi3}/power` on then off.
+- Stored decoder allocations: `runs[].provenance.decoders_allocated` in
+  `/srv/data/owl/results/decode/*.json` for devices `xiaomi` and
+  `xiaomi3`.
+
 ## 4. Anomalies and open questions
 
 **What the draft should change (the data does not support the current
@@ -772,8 +836,18 @@ wording):**
     "Figure 6".
 17. **Evidence repo sync (item 6): pushed 2026-09-30 after Ben's
     confirmation** (public `66c82f8`); the R8 amendment, its script and
-    the re-rendered Figure 7 followed in public `9528da8`. As first
-    prepared:
+    the re-rendered Figure 7 followed in public `9528da8`.
+    - **Submission release (2026-09-30):** tag **`v1.1-submission`**
+      (public commit `10cd16a`), GitHub release
+      https://github.com/Greening-of-Streaming/smpte-4951-evidence/releases/tag/v1.1-submission.
+      It matches smpte-4951 `45f340c`: manuscript V1.1 as of `d69a25b`,
+      plus the current-result headlines in RESULTS_INDEX and the
+      per-run tables. It carries C1–C28 with all amendments, and the
+      README section "Reproduce the paper's central numbers"
+      recomputes R1, R2 and Figure 7 from the pack alone. The tag
+      predates this line, which is the only difference between the
+      tagged digest and this one.
+    - As first prepared:
     - Scratch clone commit on top of public `2067f82`; 25 files,
       +2164/−31. It carries C25–C27, the C24 and C11 F1 amendments,
       RESULTS_INDEX, figures/README, all seven paper figures, and this
