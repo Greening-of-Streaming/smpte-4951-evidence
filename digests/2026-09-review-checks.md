@@ -830,6 +830,25 @@ apply and re-render, not done here.
   - Encode artifacts: wattlab `results/{calibration,diagnostics}/` (GoS1).
   - R14: `/srv/data/owl/campaign_2026-08-29_tier3/r14/`.
   - Host coefficient history: `results/variance/history.jsonl`.
+- **Per-run tables (added 2026-09-30 for the V1.1 submission pack;
+  recompute R1, R2 and Figure 7 with no GoS1 access):**
+  - `digests/2026-09-review-checks-runs.csv`: one row per decode run
+    behind R2 and Figure 7. It has 143 rows: job id, device, codec,
+    content, n baseline/task samples, W_base, W_task, ΔW, the analysed
+    value and its basis, flag, validity, in_comparison, presented fps
+    and its source, and a note.
+    - It includes the six failed-playback AV1 rows (Bbox C25 F2, W5
+      C27 F2) with in_comparison = no.
+    - `python3 analysis/review_codec_diffs.py --runs digests/2026-09-review-checks-runs.csv`
+      reproduces `2026-09-review-checks.csv` byte for byte.
+  - `digests/2026-09-review-checks-lens-runs.csv`: one row per encode
+    run behind R1 (370 rows): set, artifact, clip, rung, bitrate, cell,
+    encoder, ΔW, Δt, content seconds, W_base and its source.
+    - `python3 analysis/review_lens_ratios.py --rows digests/2026-09-review-checks-lens-runs.csv`
+      reproduces `2026-09-review-checks-lens.csv` byte for byte.
+  - Figure 7: `python3 figures/make_c25_figures.py --runs digests/2026-09-review-checks-runs.csv --out /tmp`
+    draws the same bars as the raw-store render.
+  - Both tables were written on GoS1 with `--export`.
 - **Summary CSVs:**
   - `digests/2026-09-review-checks.csv`: R2, one row per codec pair,
     with n, diff, CI, df, pooled sd and n needed.

@@ -16,7 +16,17 @@ n for a 0.1 W bound: smallest equal n per cell such that
 |d_obs| + t(.975, 2n-2) * s_pooled * sqrt(2/n) < 0.1 W   (observed d and sd
 held fixed); 'none' if |d_obs| >= 0.1 W; also n0 = the same with d = 0.
 
-Run on GoS1:  python3 analysis/review_codec_diffs.py [--csv OUT.csv]
+Two modes:
+  on GoS1, from the raw store (and write the per-run table the pack carries):
+    python3 analysis/review_codec_diffs.py --export digests/2026-09-review-checks-runs.csv \
+        --csv digests/2026-09-review-checks.csv
+  anywhere, from the public evidence pack's per-run table (no GoS1 access):
+    python3 analysis/review_codec_diffs.py --runs digests/2026-09-review-checks-runs.csv
+Both modes print the same cells and intervals. Needs scipy.
+
+The per-run table also carries rows kept out of the comparison by design
+(Bbox AV1 at 1080p59.94, C25 F2; W5 AV1, C27 F2: failed playback), with
+in_comparison = no, so Figure 7 can be drawn from the same file.
 """
 import argparse
 import csv
@@ -31,6 +41,13 @@ from collections import defaultdict
 from scipy import stats
 
 DEC = "/srv/data/owl/results/decode"
+FPS_LOGS = ("/srv/data/owl/campaign_2026-09-27_rediag/fps.jsonl",
+            "/srv/data/owl/campaign_2026-09-27_c26/fps.jsonl")
+EYE = {("C25 F1", "gtv", "h264"): "eye-checked (cell)", ("C25 F1", "gtv", "av1"): "eye-checked (cell)",
+       ("C24 am. (abs W)", "atv", None): "eye-checked (every row)"}
+FIELDS = ["set", "decode_class", "device", "content", "codec", "job_id", "n_baseline", "n_task",
+          "w_base_w", "w_task_w", "delta_w_w", "value_w", "value_basis", "flag", "valid",
+          "in_comparison", "presented_fps", "fps_source", "note"]
 BOUND = 0.1
 
 
@@ -45,9 +62,15 @@ def parse_tpl(t):
 
 
 def collect():
-    rows = []  # dict(set, cls, device, content, codec, value, job, flag, ok)
+    rows = []  # dict(set, cls, device, content, codec, value, job, flag, ok, use, ...)
+    fps = defaultdict(list)
+    for path in FPS_LOGS:
+        for l in open(path):
+            x = json.loads(l)
+            if x.get("fps") is not None:
+                fps[x["job_id"]].append(x)
 
-    def add(setname, cls, d, r, content, codec, value=None):
+    def add(setname, cls, d, r, content, codec, value=None, use=True, note=""):
         prov = r.get("provenance") or {}
 
         def playing(x):
@@ -59,9 +82,18 @@ def collect():
         ok = ((r.get("alive_at_window_end") is not False or flat)
               and playing(r.get("playback_state_at_end"))
               and playing(prov.get("playback_state_midwindow")))
+        t = r.get("raw_task_t") or []
+        fv = [x["fps"] for x in fps.get(d["job_id"], [])
+              if r["device"] == "bbox" and t and t[0] <= x["t"] <= t[-1]]
+        eye = EYE.get((setname, r["device"], codec)) or EYE.get((setname, r["device"], None), "")
         rows.append(dict(set=setname, cls=cls, device=r["device"], content=content,
                          codec=codec, value=r["delta_w"] if value is None else value,
-                         job=d["job_id"], flag=r["confidence"]["flag"], ok=ok,
+                         basis="delta_w" if value is None else "w_task (absolute)",
+                         job=d["job_id"], flag=r["confidence"]["flag"], ok=ok, use=use,
+                         note=note, n_base=len(r.get("raw_baseline_w") or []), n_task=len(w),
+                         w_base=r["w_base"], w_task=r["w_task"], delta_w=r["delta_w"],
+                         fps=round(st.mean(fv), 2) if fv else None,
+                         fps_src="SurfaceFlinger, in window" if fv else eye,
                          dec=",".join(prov.get("decoders_allocated") or []) or "-"))
 
     # C25 F1 (screen arm only)
@@ -72,15 +104,20 @@ def collect():
             continue
         for r in d["runs"]:
             c, k = parse_tpl(d["template"])
-            if r["device"] == "bbox" and k == "av1":
-                continue                    # software, ~5 fps (C25 F2)
+            if r["device"] == "bbox" and k == "av1":   # software, ~5 fps (C25 F2)
+                add("C25 F1", "sw-fail", d, r, c, k, use=False,
+                    note="software decode, ~5 of 59.94 frames/s: failed playback (C25 F2)")
+                continue
             add("C25 F1", "hw", d, r, c, k)
     # C27 F1 (AV1 excluded: 1.7 fps failed playback, C27 F2)
     for d in env("2026-09-22_*.json"):
         if d.get("batch_id") == "3e54b322a9b4":
             for r in d["runs"]:
                 c, k = parse_tpl(d["template"])
-                if k != "av1":
+                if k == "av1":
+                    add("C27 F1", "sw-fail", d, r, c, k, use=False,
+                        note="in-app software AV1, 1.3-1.7 frames/s in same-session probes: failed playback (C27 F2)")
+                else:
                     add("C27 F1", "hw", d, r, c, k)
     # C17 F3
     for d in env("2026-08-1[78]_*.json"):
@@ -116,6 +153,28 @@ def collect():
     return rows
 
 
+def export_runs(rows, path):
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(FIELDS)
+        for r in rows:
+            w.writerow([r["set"], r["cls"], r["device"], r["content"], r["codec"], r["job"],
+                        r["n_base"], r["n_task"], f"{r['w_base']:.3f}", f"{r['w_task']:.3f}",
+                        f"{r['delta_w']:.3f}", f"{r['value']:.3f}", r["basis"], r["flag"],
+                        "yes" if r["ok"] else "no", "yes" if r["use"] else "no",
+                        "" if r["fps"] is None else r["fps"], r["fps_src"], r["note"]])
+
+
+def from_runs(path):
+    rows = []
+    for x in csv.DictReader(open(path)):
+        rows.append(dict(set=x["set"], cls=x["decode_class"], device=x["device"],
+                         content=x["content"], codec=x["codec"], job=x["job_id"],
+                         value=float(x["value_w"]), flag=x["flag"], ok=x["valid"] == "yes",
+                         use=x["in_comparison"] == "yes"))
+    return rows
+
+
 def welch(a, b):
     n1, n2 = len(a), len(b)
     m1, m2 = st.mean(a), st.mean(b)
@@ -141,9 +200,15 @@ def n_needed(d, sp, bound=BOUND):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv")
+    ap.add_argument("--csv", help="write the per-pair summary CSV")
+    ap.add_argument("--export", help="GoS1: write the per-run table from the raw store")
+    ap.add_argument("--runs", help="read the per-run table instead of the raw store")
     a = ap.parse_args()
-    rows = collect()
+    rows = from_runs(a.runs) if a.runs else collect()
+    if a.export:
+        export_runs(rows, a.export)
+        print(f"per-run table ({len(rows)} rows) -> {a.export}")
+    rows = [r for r in rows if r["use"]]
     bad = [r for r in rows if not r["ok"]]
     print(f"rows {len(rows)}; excluded (not PLAYING / not alive): {len(bad)}")
     for r in bad:

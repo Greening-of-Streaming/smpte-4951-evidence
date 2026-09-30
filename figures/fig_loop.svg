@@ -30,11 +30,11 @@
   <rect x="1200" y="150" width="340" height="250" rx="16" fill="#f6f6f6" stroke="#1f2236" stroke-width="2.5"/>
   <text x="1370" y="192" text-anchor="middle" font-size="24" font-weight="bold" fill="#1f2236">OWL · the bench</text>
   <text x="1370" y="220" text-anchor="middle" font-size="15" fill="#5b5e70">one host, one rig, one variable at a time</text>
-  <text x="1370" y="258" text-anchor="middle" font-size="15" fill="#1f2236">quantifies why</text>
+  <text x="1370" y="258" text-anchor="middle" font-size="15" fill="#1f2236">tests a mechanism</text>
   <text x="1370" y="282" text-anchor="middle" font-size="14" fill="#5b5e70">few devices, controlled,</text>
   <text x="1370" y="300" text-anchor="middle" font-size="14" fill="#5b5e70">milliwatt resolution</text>
-  <text x="1370" y="338" text-anchor="middle" font-size="14" fill="#5b5e70">a result is unambiguous and narrow:</text>
-  <text x="1370" y="356" text-anchor="middle" font-size="14" fill="#5b5e70">it says nothing about a fleet</text>
+  <text x="1370" y="338" text-anchor="middle" font-size="14" fill="#5b5e70">controlled, device-specific evidence:</text>
+  <text x="1370" y="356" text-anchor="middle" font-size="14" fill="#5b5e70">it does not describe a fleet</text>
 
   <!-- ================= the loop arrows ================= -->
   <!-- top: field -> bench -->
@@ -50,14 +50,14 @@
 
   <!-- bottom labels: what the bench hands the field -->
   <rect x="470" y="400" width="660" height="88" rx="10" fill="#ffffff" stroke="#56895a" stroke-width="1.5"/>
-  <text x="800" y="426" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2236">the bench hands the field an answer, and an instrument</text>
+  <text x="800" y="426" text-anchor="middle" font-size="16" font-weight="bold" fill="#1f2236">the bench hands the field a mechanism, and an instrument</text>
   <text x="800" y="450" text-anchor="middle" font-size="14" fill="#5b5e70">3. the condition: codec cost is a property of silicon coverage; a hypothesis to test across a fleet</text>
   <text x="800" y="472" text-anchor="middle" font-size="14" fill="#5b5e70">4. the floor that hid it sent the LAN path (LEM) into the field: 10 s and 1 W to 1 s and milliwatts</text>
 
   <!-- axle: one instrument scale -->
   <rect x="530" y="240" width="540" height="80" rx="40" fill="#1f2236"/>
   <text x="800" y="272" text-anchor="middle" font-size="16" font-weight="bold" fill="#ffffff">one instrument scale</text>
-  <text x="800" y="294" text-anchor="middle" font-size="13" fill="#b6d3ac">same plug, same protocol: field and bench readers agree within 0.2% at 1 s</text>
+  <text x="800" y="294" text-anchor="middle" font-size="13" fill="#b6d3ac">same plug, same protocol: field and bench readers agree within 0.2% at 1 s (one run)</text>
   <text x="800" y="308" text-anchor="middle" font-size="12" fill="#b6d3ac">what lets a field number and a bench number be compared at all</text>
 
   <!-- ================= the turns ================= -->

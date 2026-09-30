@@ -5,10 +5,20 @@ paper: Section 5's dual-track synthesis is assembled from these entries.
 
 Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
+How to read an entry (2026-09-30, V1.1 submission): where later work
+changed a result, the entry opens with **Withdrawn** (the five
+withdrawals in the paper's Table 2) and/or **Current result**, and the
+older text below is kept, labelled **Original headline (superseded …)**.
+The corrections are part of the record; nothing has been deleted.
+
 ---
 
 ## C1 — November 2025 Cycle (Loop demonstration #1)
 
+- **Current result:** unchanged. The NVENC-vs-CPU ratios are marginal
+  (idle subtracted); under the attributional lens they shift by −24 %
+  to +10 %, CPU still dearer at every matched codec and bitrate
+  (C28 R1).
 - **Track:** REM → OWL
 - **Status:** 🟡 Early Insight (REM half: one testbed, one codec; every
   number reaches us only via reference [2] — the Nov-2025 raw data is not
@@ -28,10 +38,19 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C2 — July 2026 Cycle (Loop demonstration #2)
 
+- **Current result (2026-09-30):** REM's null stands: codec and bitrate
+  are invisible at the wall socket (C3/C4). OWL offers a mechanism.
+  Under hardware decode, the measured codec-to-codec differences are
+  ≤0.11 W: an observed range at n=2–3 per cell, not a bound, with 95 %
+  intervals up to ±0.27 W at n=3 (C28 R2). Decode itself costs
+  +0.25–0.51 W over idle on the GTV and Bbox (C25 F1). Where the silicon lacks the codec,
+  software decode costs +1.1–1.6 W (Apple TV C24 amendment; Bbox 720p30
+  C26) or the stream fails to play (Bbox 1080p, W5; C25–C27). Connection
+  method outweighs codec (C18).
 - **Track:** REM → OWL
 - **Status:** umbrella — inherits C3/C4 (🟡/🟢 within dataset) and
   C5/C6/C11/C17/C18 (🟢 within panel)
-- **Headline:** REM's null (codec/bitrate invisible at the socket,
+- **Original headline (superseded in part 2026-09-27/30: "≤ 0.08 W codec spread" → C25/C27/C28 R2; "expensive where silicon lacks the codec" → costs or fails, C25–C27):** REM's null (codec/bitrate invisible at the socket,
   luminance dominant, with an 8K/HDR boundary case) explained and priced
   by OWL (≤ 0.08 W codec spread on fixed-function silicon; expensive
   exactly where silicon lacks the codec; connection method, not delivery
@@ -95,12 +114,15 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C5 — Pi Decode Bench (July 2026)
 
+- **Current result:** the hardware-vs-software multiple is superseded by
+  C11's R6 reconciliation: 3.7× realtime / 4.6× saturated, same board,
+  n≥3 interleaved.
 - **Track:** OWL method applied to client devices (per-run idle
   baseline, ΔW, confidence model) at LEM plug resolution (1–2 s mW)
 - **Status:** 🟡 Early Insight overall (per-run confidence 🟢 on all 21
   rows; Pi 5 realtime codec ordering 🟢 at n=2–3; most other cells n=1;
   lab review pending)
-- **Headline:** A hardware decoder is worth 3.6× while playing, 4.1×
+- **Original headline (multiple superseded 2026-08-09 by C11 R6):** A hardware decoder is worth 3.6× while playing, 4.1×
   saturated, on the same board and file. In software, HEVC is dearest
   at 1× on both boards (codec moves decode power up to ~60%).
   Measurement regime flips the codec ranking (saturated, AV1 cheapest).
@@ -114,11 +136,18 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C6 — STB Decode Campaign (July 2026)
 
+- **Withdrawn (2026-08-24, paper Table 2 row 2):** F3 "delivery mode
+  outweighs codec by 5–14× (+0.42 W sustained vs burst)". It had
+  measured Wi-Fi duty cycle and a since-fixed origin defect. Pacing is a
+  null at n=3; Wi-Fi adds a device-dependent term (C18). F4's +0.21 W
+  is a Wi-Fi share.
+- **Current result:** codec-flat decode on this one box (≤0.08 W),
+  bitrate barely registers (F1/F2/F5 unaffected).
 - **Track:** OWL-style instrumented playback on consumer STB
 - **Status:** 🟡 Early Insight overall (all 24 runs 🟢 per-run;
   codec-flatness and delivery-mode findings proposed 🟢 within this
   panel — one box, one chipset; lab review pending)
-- **Headline:** Decode nearly flat across codecs on fixed-function
+- **Original headline (F3/F4 superseded 2026-08-24, see Withdrawn):** Decode nearly flat across codecs on fixed-function
   silicon (≤0.08 W, AV1 cheapest by a hair); bitrate barely registers;
   delivery mode outweighs codec by 5–14× (mean +0.42 W sustained vs
   burst), with network delivery alone +0.21 W.
@@ -135,6 +164,10 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C8 — R2 dual capture: LAN-versus-controlled (2026-08-25)
 
+- **Current result:** headline stands, scoped. "0.2 % at 1 s" is one
+  run (GTV) and agreement between two read paths of the same P110, not
+  meter accuracy (no reference meter; C28 R5e/R7). The multi-run
+  figure is 10 s: −0.4 … −2.7 % over 7 LAN runs.
 - **Track:** REM ↔ OWL method run — one playback, two readers per plug
   (bench 1 s/mW local; REM LAN path = LEM → field API at 10 s and 1 s;
   REM cloud path = TP-Link cloud under Strong focus, 10 s, integer W)
@@ -161,11 +194,36 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C11 — Decode Rig Campaign (Jul 30–Aug 1 2026, five-device bench)
 
+- **Withdrawn (paper Table 2, three rows):**
+  - **F1, 2026-09-27 (row 5):** "a streaming box plays 4–7× cheaper than
+    a general-purpose board". It rested on one low GTV reading (n=1).
+    Re-measured +0.613 W at n=3; the remaining 2.1–3.3× ratio is
+    🔴 Need More Data (Pi numerators n=1).
+  - **F11, 2026-09-27 (row 4):** "AV1 +1.4 W on an operator CPE". It
+    was a software decoder presenting ~5 of 59.94 frames/s, a failed
+    playback (C25 F2). At 720p30 AV1 plays and costs +1.59 W over H.264
+    (C26).
+  - **F9, 2026-08-24 (row 1):** the "5–20 min window" and the ~1 h
+    degradation. They were set-top boxes falling asleep.
+- **Also superseded (2026-09-27, C25):** the F7/F11 codec matrix.
+  - Its Fire TV/GTV H.264 cells and GTV AV1 cells were paused-player or
+    sleeping-box rows.
+  - Hardware decode is +0.25–0.51 W over idle, not "below ±0.2 W".
+- **Current result:**
+  - Same-board hardware vs software H.264 costs 3.7× realtime / 4.6×
+    saturated (🟢, R6).
+  - HEVC is ~1.9× H.264 in software (Pi 5).
+  - Under hardware decode, codec-to-codec differences are ≤0.11 W
+    observed (C28 R2).
+  - "Can decode" ≠ "can play".
+  - F9: a clear signal is confident within seconds and flat through
+    59 min; small margins flicker at every length, so repeats beat
+    length.
 - **Track:** OWL client bench, protocol v3 (stable-idle guard, in-clip
   markers, five concurrently metered devices — parallel validated)
 - **Status:** 🟢 lab-confirmed 2026-08-09 (66-cell campaign,
   run-ID-cited; findings docs de-DRAFTed); F5/F8 held at 🟡
-- **Headline:** A streaming box plays 4–7× cheaper than a
+- **Original headline (superseded 2026-09-27 in F1, F7, F11 and 2026-08-24 in F9, see Withdrawn):** A streaming box plays 4–7× cheaper than a
   general-purpose board, display attached. Codec choice is nearly free
   where silicon covers it (fixed-function 4K ≈ 1080p; hw marginal below
   ±0.2 W noise at any run length) and expensive where it is not: HEVC
@@ -294,6 +352,18 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C17 — VP9 iso-bitrate re-run: encode operating points + four-codec decode (2026-08-17→18)
 
+- **Current result (2026-09-30):**
+  - **Encode:** the operating point decides which codec is dearest
+    (stands; #4941 boundary).
+  - **Decode, hardware (GTV, Fire TV):** VP9 sits within the other
+    codecs' spread. Codec-to-codec differences are ≤0.09 W observed;
+    95 % intervals reach ±0.24 W (GTV) and ±0.56 W (Fire TV) at n=2–3.
+    This is an observed range, not a bound (C28 R2).
+  - **Decode, software (Pi 400):** VP9 is cheapest and HEVC dearest, on
+    this one board. The generalisation "VP9 decodes cheaper than AV1"
+    does not hold on the Apple TV or the Roku (C19 F6, C20 F2).
+  - The C17 **Bbox AV1** rows are failed playback (C25 F2).
+  - The Bbox Kranjska negatives remain unexplained.
 - **Track:** OWL both sides — GoS1 software-encode panel (parity
   harness, dual P110, n=3, reps not adjacent) + decode rig protocol v3
   (five devices parallel, 1080 s windows, n=2–3).
@@ -301,7 +371,7 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
   valid rows all green); 🟡 on cross-campaign/cross-ladder comparisons
   and device generality. First indication with repeats, not
   lab-reviewed.
-- **Headline:** The operating point decides which "new" codec is the
+- **Original headline ("±0.1 W" superseded 2026-09-30 by C28 R2 as an observed range; Bbox AV1 rows by C25 F2):** The operating point decides which "new" codec is the
   expensive one: at defaults VP9 is ~4.6–4.9× x264 per minute of
   output; at the everything-slow set SVT-AV1 p3 is (9.5–10.8× x264,
   ~2× VP9). On hardware clients VP9 decode is energy-neutral vs
@@ -318,12 +388,20 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C18 — Network-path campaign + C6 delivery-mode reconciliation (2026-08-18→19, desk pass 08-24)
 
+- **Withdraws (paper Table 2 row 2, C18 F3–F4):** C6 F3's "+0.42 W
+  premium for sustained over burst-buffered delivery", which was Wi-Fi
+  duty cycle plus an origin defect.
+- **Current result:**
+  - No measurable pacing effect on the tested boxes (n=3).
+  - Wi-Fi adds a device-dependent term (+0.1 to +1.0 W).
+  - Ethernet ≈ local file is shown on **one box** (GTV, n=3: +0.019 W,
+    95 % CI [−0.034, +0.073]; C28 R5a), not across devices.
 - **Track:** OWL decode rig protocol v3 (Ethernet vs Wi-Fi vs local ×
   1.5/8/20 Mb/s × burst/paced, one content family) + desk audit of C6.
 - **Status:** 🟢 within panel (GTV/Bbox n=3 per interface); 🟡 Fire TV
   (n=2) / Pi (n=1) and any device-level generalisation (one link, one
   room).
-- **Headline:** Ethernet delivery ≈ local file (network free at the
+- **Original headline ("Ethernet ≈ local file" narrowed 2026-09-30 to one box, C28 R5a):** Ethernet delivery ≈ local file (network free at the
   client); Wi-Fi costs every device more, by very different amounts
   (GTV +0.21 W avg, Bbox +0.98 W, Pi +0.32, Fire TV +0.1–0.35; overall
   +0.50 W = +75 % while playing); paced vs burst is a null at n=3.
@@ -341,6 +419,17 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C19 — Apple TV 4K (2017, A10X), VLC-driven, four codecs (2026-08-26/27, +2026-08-29)
 
+- **Withdraws (paper Table 2 row 3, with C20 F2):** the public claim
+  that VP9 decodes cheaper than AV1 in software on this device.
+  - F6: AV1 and VP9 are indistinguishable (3.435 vs 3.495 W, n=3).
+- **Current result:**
+  - AV1 ≈ VP9 on the A10X.
+  - The H.264/HEVC vs AV1/VP9 gap is now carried by C24 and its
+    2026-09-27 amendment: +1.22 / +1.11 W over H.264, absolute basis,
+    real-time playback eye-checked. F3's device-total +1.19 W is
+    superseded.
+  - Per-run 🟢 flags on this box are not citable per-run evidence, due
+    to tvOS idle drift (C28 R6).
 - **Track:** OWL client bench (wattlab CR-075) — first Apple-silicon rows
   on an OWL bench
 - **Status:** 🟢 **Repeatable** (upgraded 2026-08-27: overnight campaign,
@@ -349,7 +438,7 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
   pilot's 🟡 n=2/one-content estimate, which it closely reproduces). 🟢 for
   the mechanism findings throughout (AirPlay `play_url` dead on tvOS 18
   **and** 26; VLC via Companion works; headless is not a measurement).
-- **Headline:** On the 2017 A10X, **H.264 and HEVC play at the same power
+- **Original headline (F3's device-total gap superseded 2026-08-31 by C24 and 2026-09-27 by its amendment; see Withdraws):** On the 2017 A10X, **H.264 and HEVC play at the same power
   (device-total mean 4.08 W, VideoToolbox) across all three content
   families, while AV1 and VP9 both cost +1.19 W more (+29 %)** — the third
   independent instance of "the codec the silicon lacks is paid for in
@@ -389,6 +478,10 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C20 — Roku Express 4K, four codecs (2026-08-29)
 
+- **Withdraws (paper Table 2 row 3, with C19 F6):** "VP9 decodes cheaper
+  than AV1" — F2 finds AV1 ≈ VP9 here too (0.476 vs 0.481 W).
+- **Current result:** headline stands; decoder path unconfirmed
+  (device-total reading).
 - **Track:** OWL client bench (wattlab, new device this session) —
   first Roku rows on an OWL bench.
 - **Status:** 🟢 within panel (n=3 per codec, one content family — BBB
@@ -520,6 +613,15 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C24 — Apple TV clean ΔW re-run: the codec gap on a marginal basis (2026-08-31)
 
+- **Current result (2026-09-27 amendment):**
+  - The software fallback plays in real time: BBB, every row
+    eye-checked smooth.
+  - **AV1 / VP9 cost +1.22 / +1.11 W over H.264 on the absolute basis**
+    (n=3, sd ≤0.11 W, 🟢).
+  - On the ΔW basis they cost +1.03 / +1.00 W (n=2 after two tvOS
+    idle-swing baselines, 🟡).
+  - Per-run ΔW flags on this box are not citable per-run evidence
+    (C28 R6).
 - **Track:** OWL decode rig, Apple TV 4K (A10X), screen mode, n=3 ×
   4 codecs × 3 content families (36 rows) — the writing desk's top
   priority for the final overnight window before the draft
@@ -527,7 +629,7 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 - **Status:** 🟢 (34/36 rows clean, CV ≤5%; 2 isolated outlier rows
   kept in the record and reported alongside their clean-pair
   alternative, not silently dropped).
-- **Headline:** **Replaces C19 F3's device-total figure with a proper
+- **Original headline (basis superseded 2026-09-27: cite the absolute-watts gap):** **Replaces C19 F3's device-total figure with a proper
   ΔW-over-idle measurement — the codec gap holds on the marginal basis
   too, across all three content families:** H.264≈HEVC (2.0–2.7 W)
   vs AV1≈VP9 (2.5–3.6 W), the same qualitative shape C19 F3 reported
@@ -550,6 +652,17 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C25 — Figure 8 re-diagnosis: the July negatives were playback that was not happening (2026-09-27)
 
+- **Withdraws (paper Table 2 row 4, with C26):** C11 F11 / C17's "AV1
+  +1.4 W on the Bbox". It is a software decoder presenting ~5 of 59.94
+  frames/s on the box's 50 Hz output (C28 R3): a failed playback.
+  - Also retires the old Figure 8 matrix cells (paused player, sleeping
+    box).
+- **Current result:**
+  - Hardware decode, playback verified: GTV +0.47 / +0.51 / +0.43 W
+    (H.264 / HEVC / AV1) and Bbox +0.33 / +0.25 W (H.264 / HEVC), n=3.
+  - This is Figure 7 of the paper.
+  - Codec-to-codec differences are ≤0.08 W here; 95 % intervals reach
+    ±0.27 W (C28 R2).
 - **Track:** OWL decode rig, protocol v3, screen mode (panel lit on the
   box's own input; GTV re-cabled to HDMI_1 for this). GTV + Bbox ×
   Meridian H.264 / HEVC / AV1, n=3, interleaved, player verified
@@ -562,7 +675,7 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
   n=3 each); 🟡 F3 (paused-player mechanism, reproduced n=1 per box),
   F4 (GTV asleep in the parallel AV1 rows; trigger 🔴), F5 (panel
   standby not the cause; half the rows have no panel record).
-- **Headline:** Figure 8's anomalies were not panel standby. Every C11
+- **Original headline (fps wording superseded 2026-09-30 by C28 R3; figure pointer since fixed):** Figure 8's anomalies were not panel standby. Every C11
   H.264 row on the Fire TV and the GTV was a paused player: resumed at a
   remembered position, a defect fixed 16 days later in wattlab
   `fec0065`, and reproduced today on both boxes. The GTV's parallel AV1
@@ -587,6 +700,14 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
 
 ## C26 — Bbox AV1 plays at 720p30 (+1.5 W); 1080p30 still fails (2026-09-27)
 
+- **Replaces (paper Table 2 row 4, with C25 F2):** the withdrawn "+1.4 W
+  AV1" on the Bbox.
+- **Current result:**
+  - AV1 plays at 720p30 and costs +1.51 W over idle, +1.59 W over
+    H.264 (95 % CI [+1.55, +1.62]).
+  - At 1080p30 AV1 presents 14–17 of 30 frames/s in the measurement
+    window: a failure.
+  - At 1080p59.94 it presents ~5.
 - **Track:** OWL decode rig, protocol v3, screen mode (`panel:HDMI_2`),
   Bbox × Meridian AV1/H.264 at 720p30 and 1080p30 (VMAF-matched
   fixtures), n=3 per cell, presented fps sampled in-window on every row
@@ -666,7 +787,8 @@ Status legend: 🟢 Repeatable · 🟡 Early Insight · 🔴 Need More Data
       boxes, but no C25–C27 flag changes.
     - There is no reference meter.
 - **Digest:** `digests/2026-09-review-checks.md` (+ `.csv`,
-  `-lens.csv`); scripts `analysis/review_lens_ratios.py`,
+  `-lens.csv`, and per-run tables `-runs.csv` / `-lens-runs.csv` that
+  let R1, R2 and Figure 7 be recomputed from the public pack); scripts `analysis/review_lens_ratios.py`,
   `review_codec_diffs.py`, `device_idle_coeffs.py`.
 - **Paper role:** decides the wording of the abstract's codec sentence
   and §3's lens sentence. The full list of draft changes is in digest

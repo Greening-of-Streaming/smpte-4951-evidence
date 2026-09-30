@@ -139,7 +139,7 @@
 
   <!-- ================= boundary and OWL note ================= -->
   <text x="120" y="745" font-size="14" fill="#5b5e70">Measurement boundary: the device's mains socket and the server rack's PDU. Encoder output, CDN, and access network are not metered.</text>
-  <text x="120" y="768" font-size="14" fill="#5b5e70">OWL (Section 3) reads the same plug over the same local protocol on its benches; the two readers agree within 0.2% at 1 s [C8].</text>
+  <text x="120" y="768" font-size="14" fill="#5b5e70">OWL (Section 3) reads the same plug over the same local protocol on its benches; the two readers agree within 0.2% at 1 s in one run.</text>
 
   <!-- legend -->
   <line x1="1250" y1="745" x2="1300" y2="745" stroke="#aeb3c4" stroke-width="2.5"/>

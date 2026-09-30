@@ -14,7 +14,13 @@ group (same set, same clip, same target bitrate / rung).
 Multiplier m = attr/marg = 1 + W_base/dW, so ratio_attr/ratio_marg =
 m_a/m_b: ratios are unchanged only where two rows share the same dW.
 
-Run on GoS1:  python3 analysis/review_lens_ratios.py [--csv out.csv]
+Two modes:
+  on GoS1, from the stored parity artifacts (and write the per-row table):
+    python3 analysis/review_lens_ratios.py --export digests/2026-09-review-checks-lens-runs.csv \
+        --csv digests/2026-09-review-checks-lens.csv
+  anywhere, from the public evidence pack's per-row table (no GoS1 access):
+    python3 analysis/review_lens_ratios.py --rows digests/2026-09-review-checks-lens-runs.csv
+Both modes print the same multipliers, shifts and flips.
 """
 import argparse
 import csv
@@ -60,6 +66,36 @@ def rows():
         out.append(dict(set="R14", src="R14", group=("R14", "bbb", "crf", 1080, "crf"),
                         cell=r["arm"], hw="cpu", dw=r["delta_w"], dt=r["delta_t_s"],
                         cs=r["content_s"], wb=r["w_base"], wb_src="row"))
+    return derive(out)
+
+
+ROW_FIELDS = ["set", "source_artifact", "clip", "rung", "height", "target_kbps", "cell",
+              "encoder_hw", "delta_w_w", "delta_t_s", "content_s", "w_base_w", "w_base_source"]
+
+
+def export_rows(rs, path):
+    with open(path, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(ROW_FIELDS)
+        for r in rs:
+            g = r["group"]
+            w.writerow([g[0], r["src"], g[1], g[2], g[3], g[4], r["cell"], r["hw"],
+                        r["dw"], r["dt"], r["cs"], r["wb"], r["wb_src"]])
+
+
+def rows_from_csv(path):
+    out = []
+    for x in csv.DictReader(open(path)):
+        out.append(dict(set=x["set"], src=x["source_artifact"],
+                        group=(x["set"], x["clip"], x["rung"], int(x["height"]),
+                               int(x["target_kbps"]) if x["target_kbps"].isdigit() else x["target_kbps"]),
+                        cell=x["cell"], hw=x["encoder_hw"], dw=float(x["delta_w_w"]),
+                        dt=float(x["delta_t_s"]), cs=float(x["content_s"]),
+                        wb=float(x["w_base_w"]), wb_src=x["w_base_source"]))
+    return derive(out)
+
+
+def derive(out):
     for r in out:
         r["marg"] = per_min(r["dw"], r["dt"], r["cs"])
         r["attr"] = per_min(r["wb"] + r["dw"], r["dt"], r["cs"])
@@ -87,9 +123,15 @@ def cells(rs):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv")
+    ap.add_argument("--csv", help="write the per-cell summary CSV")
+    ap.add_argument("--export", help="GoS1: write the per-row table from the stored artifacts")
+    ap.add_argument("--rows", help="read the per-row table instead of the stored artifacts")
     a = ap.parse_args()
-    cs = cells(rows())
+    rs = rows_from_csv(a.rows) if a.rows else rows()
+    if a.export:
+        export_rows(rs, a.export)
+        print(f"per-row table ({len(rs)} rows) -> {a.export}")
+    cs = cells(rs)
     groups = defaultdict(list)
     for c in cs:
         groups[c["group"]].append(c)

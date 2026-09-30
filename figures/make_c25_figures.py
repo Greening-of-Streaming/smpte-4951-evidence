@@ -6,6 +6,8 @@ Two ways to reproduce it:
 
   on GoS1, from the raw store:
     /srv/data/owl/figenv/bin/python figures/make_c25_figures.py
+  anywhere, from the evidence pack's per-run table (exact repeats):
+    python3 figures/make_c25_figures.py --runs digests/2026-09-review-checks-runs.csv --out /tmp
   anywhere, from the published digest CSV:
     python3 figures/make_c25_figures.py --csv digests/2026-09-c25-decode-rediag.csv
 
@@ -84,11 +86,22 @@ def csv_cells(path):
     return cells
 
 
+def runs_cells(path):
+    cells = {}
+    for r in csv.DictReader(open(path)):
+        if r["set"] == "C25 F1":      # screen arm, incl. the Bbox AV1 rows (in_comparison = no)
+            cells.setdefault((r["device"], r["codec"]), []).append(float(r["delta_w_w"]))
+    return cells
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", help="digest CSV instead of the GoS1 raw store")
+    ap.add_argument("--runs", help="per-run table (digests/2026-09-review-checks-runs.csv)")
+    ap.add_argument("--out", default=str(HERE), help="output folder (default: figures/)")
     args = ap.parse_args()
-    new = csv_cells(args.csv) if args.csv else c25_cells()
+    new = (runs_cells(args.runs) if args.runs else
+           csv_cells(args.csv) if args.csv else c25_cells())
     fig, ax = plt.subplots(figsize=(6.4, 3.3))
     width, gap = 0.24, 0.04
     for gi, dev in enumerate(DEVICES):
@@ -128,7 +141,7 @@ def main():
                  "box's input · bars = mean of 3", fontsize=9, loc="left",
                  color=TEXT_1)
     for ext, kw in (("svg", {}), ("png", {"dpi": 600})):
-        fig.savefig(HERE / f"fig_c25_codec_matrix.{ext}",
+        fig.savefig(Path(args.out) / f"fig_c25_codec_matrix.{ext}",
                     bbox_inches="tight", **kw)
     print("wrote fig_c25_codec_matrix.svg/.png")
 
