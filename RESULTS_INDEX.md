@@ -811,7 +811,8 @@ The corrections are part of the record; nothing has been deleted.
   and §3's lens sentence. The full list of draft changes is in digest
   §4 items 1–9.
   - Evidence-repo sync (C25–C28) pushed 2026-09-30 (public
-    `66c82f8`). The R8 amendment below is not in the pack yet.
+    `66c82f8`). The R8 amendment below has been in the pack since
+    public `9528da8`.
 - **⚠ 2026-09-30 amendment (R8, calibration provenance):**
   - **The current host calibration is 2.46 % / 1.90 %** (20 paired
     encode runs, **2026-09-05**, idle 78.4 W display blanked). It is the
